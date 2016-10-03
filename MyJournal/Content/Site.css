@@ -1,10 +1,10 @@
-﻿body {
-    padding-top: 50px;
+﻿#overrides body {
+    padding-top: 70px;
     padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+#overrides .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -17,8 +17,58 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
+}*/
+
+#overrides body {
+  padding: 50px;
 }
+
+input[type=text] {
+  padding: 3px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+}
+
+input[type=date] {
+  padding: 2px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+}
+
+.error {
+  color: #a00;
+}
+
+textarea {
+  padding: 3px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+}
+
+.album {
+  width: 350px;
+  float: left;
+  margin-right: 10px;
+}
+
+div.album div.title {
+  float: right;
+}
+
+
+div.album .panel-heading a {
+  text-decoration: none;
+  color: white;
+}
+div.album .panel-heading a:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+
+
+/*Added by me*/

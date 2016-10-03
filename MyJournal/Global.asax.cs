@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,12 @@ namespace MyJournal
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            var formatters = GlobalConfiguration.Configuration.Formatters;
+            var jsonFormatter = formatters.JsonFormatter;
+            var settings = jsonFormatter.SerializerSettings;
+            settings.Converters.Add(new IsoDateTimeConverter());
+            //settings.Formatting = Formatting.Indented;
+            //settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

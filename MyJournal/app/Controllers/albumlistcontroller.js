@@ -1,6 +1,9 @@
-﻿(function () {
+﻿
 
-    function AlbumListController($scope, albumProvider, $location) {
+//(function () {
+angular.module('Journal.AlbumListController', [])
+//function AlbumListController($scope, albumProvider, $location) {
+    .controller('AlbumListController', ['$scope', '$http', 'albumProvider', function ($scope, $http, albumProvider) {
 
         $scope.new_album = {};
         $scope.add_error_text = '';
@@ -10,7 +13,7 @@
             if (err) {
                 $scope.page_load_error = "Unexpected error loading albums: " + e.message;
             } else {
-                $scope.albums = albums;
+                $scope.Albums = albums;
             }
         });
 
@@ -37,8 +40,4 @@
 
             });
         };
-    }
-
-    photoApp.controller("AlbumListController", AlbumListController);
-
-})();
+    }]);

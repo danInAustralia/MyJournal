@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div ng-controller="AlbumListController">
+
+    <div style="margin: 5px" class="alert alert-danger" ng-show="page_load_error">
+        {{page_load_error}}
+    </div>
+    @*<p>{{ Albums | json}}</p>*@
+
+    <p> Displaying {{ Albums.Albums.length | pluralise:{one:"album", more:"albums"} }} </p>
+
+    <p>
+        <input type="text" placeholder="Search..." ng-model="searchFor" size="20" />
+    </p>
+
+    <!-- album filter -->
+    <pa-album album='thealbum' ng-repeat='thealbum in Albums.Albums'></pa-album>
+
+    <!-- existing albums-->
+    <div class="album panel panel-primary" ng-repeat="album in Albums.Albums | filter: { searchFor } ">
+        <!--  <div class="album panel panel-primary" ng-repeat="album in albums | multifieldfilter:{ title: searchFor } "> -->
+        <div class="panel-heading">
+            <a href="index.html#/album/{{album.Name}}">{{ album.Name }}</a>
+            <div class="title">{{ album.AlbumDate }}</div>
+        </div>
+        <div class="panel-body">
+            {{ album.Description }}
+        </div>
+    </div>
+
+    <!-- new album -->
+
+    <div style="clear: left"></div>
+    <h3> Add new album</h3>
+    <div class="album panel panel-default">
+        <div style="margin: 5px" class="alert alert-danger" ng-show="add_error_text">{{add_error_text}}</div>
+        <form name="add_album_form">
+            <div class="panel-heading">
+
+                <input type="text" placeholder={{Albums.NewAlbum.Name}} size="17" ng-model="Albums.NewAlbum.Name" />
+                <div class="title">
+                    @*<md-datepicker ng-model="Albums.NewAlbum.AlbumDate" md-placeholder="Enter date"></md-datepicker>*@
+                    <input type="date" style="width: 145px" placeholder="Enter date.." ng-model="Albums.NewAlbum.AlbumDate" />
+                </div>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <textarea ng-model="Albums.NewAlbum.Description" placeholder="Description..." rows='4' style="width: 100%"></textarea>
+                </p>
+                @*<p>
+                        <input type="text"
+                                name="name"
+                                ng-model="Albums.NewAlbum.Name"
+                                placeholder="Short name for URL..."
+                                style="width: 100%"
+                                ng-minlength="6"
+                                ng-maxlength="40" />
+                    </p>*@
+                <button ng-click="addAlbum(Albums.NewAlbum)" type="button" class="btn btn-success">Add New Album</button>
+            </div>
+        </form>
+    </div>
+
+    <div style="clear: left"></div>
+</div>
+    @*<script type="text/javascript" src="~/app/app.js"></script>
+    <script type="text/javascript" src="~/app/Controllers/albumuploadcontroller.js"></script>
+    <script type="text/javascript" src="~/app/Controllers/albumlistcontroller.js"></script>
+    <script type="text/javascript" src="~/app/services/albumprovider.js"></script>
+    <script type="text/javascript" src="~/Scripts/angular-file-upload.js"></script>*@
