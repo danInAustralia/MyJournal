@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Albums";
 }
 
 <div ng-controller="AlbumListController">
@@ -23,7 +23,7 @@
     <div class="album panel panel-primary" ng-repeat="album in Albums.Albums | filter: { searchFor } ">
         <!--  <div class="album panel panel-primary" ng-repeat="album in albums | multifieldfilter:{ title: searchFor } "> -->
         <div class="panel-heading">
-            <a href="index.html#/album/{{album.Name}}">{{ album.Name }}</a>
+            <a href="Detail?albumName={{album.Name}}">{{ album.Name }}</a>
             <div class="title">{{ album.AlbumDate }}</div>
         </div>
         <div class="panel-body">

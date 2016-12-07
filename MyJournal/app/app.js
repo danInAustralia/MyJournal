@@ -1,4 +1,4 @@
-﻿var photoApp = angular.module("app", ["Journal.AlbumUploadController", "Journal.AlbumListController", "Journal.AlbumProvider", "angularFileUpload", "ngMaterial", "ngAria"]);
+﻿var photoApp = angular.module("app", ["Journal.AlbumUploadController", "Journal.AlbumListController", "Journal.AlbumViewController", "Journal.AlbumProvider", "angularFileUpload", "ngMaterial", "ngAria", "ngRoute"]);
 
 photoApp.filter("pluralise", function () {
     return function (count, nouns) {

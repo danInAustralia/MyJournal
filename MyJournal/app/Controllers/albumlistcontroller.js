@@ -3,7 +3,7 @@
 //(function () {
 angular.module('Journal.AlbumListController', [])
 //function AlbumListController($scope, albumProvider, $location) {
-    .controller('AlbumListController', ['$scope', '$http', 'albumProvider', function ($scope, $http, albumProvider) {
+    .controller('AlbumListController', ['$scope', '$http', 'albumProvider', '$location', function ($scope, $http, albumProvider, $location) {
 
         $scope.new_album = {};
         $scope.add_error_text = '';
@@ -34,7 +34,7 @@ angular.module('Journal.AlbumListController', [])
                     $scope.new_album = {};
                     $scope.add_error_text = '';
 
-                    // now, redirect to load in the album!
+                    // now, redirect to load in the album you just created!
                     $location.path("/album/" + album_data.name);
                 }
 

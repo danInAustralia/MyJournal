@@ -14,5 +14,10 @@ namespace ResourceModel
 
         public DateTime AlbumDate { get; set; }
         public List<Resource> Resources = new List<Resource>();
+
+        public String id
+        {
+            get { return Name; }
+        }
     }
 }

@@ -9,9 +9,20 @@ namespace ResourceModel
     public class Resource
     {
         public String Md5 { get; set; }
+        public String Path { get; set; }
         public String OriginalFileName { get; set; }
         public MimeType Type;
         public List<Tag> Tags { get; set; }
+
+        public String Description { get; set; }
+
+        public String id
+        {
+            get
+            {
+                return Md5;
+            }
+        }
     }
 
 

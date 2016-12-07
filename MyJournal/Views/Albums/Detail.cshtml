@@ -1,0 +1,46 @@
+﻿@model string
+@{
+    ViewBag.Title = "Album Details";
+}
+
+<div ng-controller="AlbumViewController" ng-init="init('@Model')">
+    <div class="album panel panel-primary">
+        <!--  <div class="album panel panel-primary" ng-repeat="album in albums | multifieldfilter:{ title: searchFor } "> -->
+        <div>
+            {{album | json}}
+        </div>
+
+        <div class="panel-heading">
+            <h4>{{ album.Name }}</h4>
+            <div class="title">{{ album.AlbumDate }}</div>
+        </div>
+        <div class="panel-body">
+            {{ album.Description }}
+        </div>
+    </div>
+
+    <div style="clear: left"></div>
+    
+    <a href="ResourceUploader?albumName={{album.Name}}">
+        <button type="button" class="btn btn-success">Add files to this album</button>
+    </a>
+
+    <div style="clear: left"></div>
+
+    <div class="photo thumbnail" ng-repeat="photo in album.Resources" style="width: 250px; float: left; margin-right: 10px">
+
+        <a href="{{photo.Path}}/{{photo.Md5}}">
+            <img ng-src="{{photo.Path}}/{{photo.Md5}}" />
+        </a>
+        <p> {{ photo.Description }} </p>
+    </div>
+    
+    <div ng-if="album.Resources.length == 0">
+        <p>There are no resources in this album.</p>
+    </div>
+
+    <div style="clear: left"></div>
+
+
+
+</div>

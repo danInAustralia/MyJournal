@@ -1,4 +1,5 @@
 ﻿using MyJournal.ViewModels;
+using ResourceRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace MyJournal.Factories
     public class AlbumListViewModelFactory
     {
 
-        public AlbumListViewModel GetAlbumListViewModel()
+        public AlbumListViewModel GetAlbumListViewModel(IResourceRepository repository)
         {
             AlbumListViewModel vm = new AlbumListViewModel
             {
-                Albums = new List<ResourceModel.Album>(),
+                Albums = repository.GetAlbums(null),
                 NewAlbum = new ResourceModel.Album
                 {
                     Name = "New Album",

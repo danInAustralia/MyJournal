@@ -7,7 +7,7 @@ angular.module('Journal.AlbumProvider', [])
             return $fileUploader.create({
                 scope: scope,
                 method: "PUT",
-                url: "/api/albums/" + album_name + "/photos.json"
+                url: "/api/albums/Upload?id=" + album_name
             });
         };
 
@@ -24,14 +24,15 @@ angular.module('Journal.AlbumProvider', [])
 
         this.addAlbum = function (album_data, callback) {
 
-            if (!album_data.title) throw new Error("missing_title");
-            if (!album_data.description) throw new Error("missing_description");
-            if (!album_data.date) throw new Error("bad_date");
+            if (!album_data.Name) return callback({code: "missing_title"});
+            if (!album_data.Description) return callback({code:"missing_description"});
+            if (!album_data.AlbumDate) return callback({ code: "bad_date" });
 
-            var d = new Date(album_data.date.trim());
-            if (isNaN(d.getTime())) throw new Error("bad_date");
+            //var d = new Date(album_data.date.trim());
+            //if (isNaN(d.getTime())) throw new Error("bad_date");
 
-            $http.put("/v1/albums.json", album_data)
+            //$http.put("/api/PostAlbum/", album_data)
+            $http.post("/api/albums/PostAlbum/", album_data)
                 .success(function (data, status, headers, conf) {
                     callback(null, data);
                 })
@@ -42,7 +43,7 @@ angular.module('Journal.AlbumProvider', [])
         };
 
         this.getAlbumByName = function (name, callback) {
-            $http.get("/v1/albums/" + name + "/photos.json")
+            $http.get("/api/albums/" + name)
                 .success(function (data, status, headers, conf) {
                     callback(null, data);
                 })
