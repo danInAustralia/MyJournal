@@ -16,7 +16,7 @@ using Amazon.S3.Transfer;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace ResourceRepository
+namespace Repository
 {
     public class ResourceRepository : IResourceRepository
     {
@@ -49,6 +49,17 @@ namespace ResourceRepository
             return list;
         }
 
+        public bool ResourceExists(ResourceModel.Resource resource)
+        {
+            bool docExists = client.CreateDocumentQuery(UriFactory.CreateCollectionUri(DatabaseID, CollectionID))
+                    .Where(doc => doc.Id == "document id")
+                    .Select(doc => doc.Id)
+                    .AsEnumerable()
+                    .Any();
+
+            return docExists;
+        }
+
         public async Task<Document> AddAlbum(Album album)
         {
             return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseID, CollectionID), album);
@@ -64,7 +75,7 @@ namespace ResourceRepository
             throw new NotImplementedException();
         }
 
-        public void SaveFile(Stream fileStream)
+        public void SaveFile(Stream fileStream, String originalName)
         {
             IAmazonS3 s3Client = new AmazonS3Client();
 
@@ -81,6 +92,20 @@ namespace ResourceRepository
                     {
                         {
                             md5Sum = BitConverter.ToString(md5.ComputeHash(fileStream)).Replace("-", "").ToLower();
+
+                            //create the resource object
+                            ResourceModel.Resource resource = new ResourceModel.Resource
+                            {
+                                Md5 = md5Sum,
+                                OriginalFileName = originalName
+                            };
+
+                            if(ReferenceService.IsValidImage(fileStream))
+                            {
+                                resource.Type = "Image";
+                                resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
+                            }
+
                             //fileStream.Position = 0;
                             //TransferUtilityUploadRequest tuu = new TransferUtilityUploadRequest
                             //{
@@ -89,7 +114,14 @@ namespace ResourceRepository
                             //    Key = "belvedere"
                             //};
                             //tr.UploadAsync(tuu);
-                            tr.Upload(fileStream, "piccoli", md5Sum);
+
+                            if (!ResourceExists(resource))
+                            {
+                                //upload the file
+                                tr.Upload(fileStream, "piccoli", md5Sum);
+                                //update the database
+
+                            }
                         }
                     }
                 }

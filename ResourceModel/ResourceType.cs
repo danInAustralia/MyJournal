@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ResourceModel
 {
-    public class Tag
+    public class ResourceType
     {
         public int ID { get; set; }
-        public String TagName { get; set; }
+        public int Type { get; set; }
     }
 }

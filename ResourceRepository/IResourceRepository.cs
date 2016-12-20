@@ -8,11 +8,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResourceRepository
+namespace Repository
 {
     public interface IResourceRepository
     {
-        void SaveFile(Stream fileStream);
+        void SaveFile(Stream fileStream, String originalName);
 
         int AddTagToFile(String md5, Tag tag);
 

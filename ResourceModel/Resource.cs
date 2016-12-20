@@ -8,21 +8,14 @@ namespace ResourceModel
 {
     public class Resource
     {
-        public String Md5 { get; set; }
-        public String Path { get; set; }
-        public String OriginalFileName { get; set; }
-        public MimeType Type;
-        public List<Tag> Tags { get; set; }
-
-        public String Description { get; set; }
-
-        public String id
-        {
-            get
-            {
-                return Md5;
-            }
-        }
+        public virtual String Md5 { get; set; }
+        //public String Path { get; set; }
+        public virtual String OriginalFileName { get; set; }
+        public virtual ResourceType Type { get; set; }
+        public virtual List<Tag> Tags { get; set; }
+        public virtual String Description { get; set; }
+        public virtual DateTime Date { get; set; }
+        public virtual User Owner { get; set; }
     }
 
 

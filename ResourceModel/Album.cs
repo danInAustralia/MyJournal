@@ -9,15 +9,12 @@ namespace ResourceModel
 {
     public class Album
     {
+        public int ID { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
 
         public DateTime AlbumDate { get; set; }
         public List<Resource> Resources = new List<Resource>();
-
-        public String id
-        {
-            get { return Name; }
-        }
+        public User Owner { get; set; }
     }
 }

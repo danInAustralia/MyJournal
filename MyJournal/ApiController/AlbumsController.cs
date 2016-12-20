@@ -3,7 +3,7 @@ using System.Linq;
 using MyJournal.Factories;
 using MyJournal.ViewModels;
 using ResourceModel;
-using ResourceRepository;
+using Repository;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web;
@@ -22,7 +22,7 @@ namespace MyJournal.ApiControllers
         public AlbumListViewModel GetAllAlbums()
         {
             AlbumListViewModelFactory albumListFactory = new AlbumListViewModelFactory();
-            IResourceRepository repository = new ResourceRepository.ResourceRepository();
+            IResourceRepository repository = new ResourceRepository();
             AlbumListViewModel vm = albumListFactory.GetAlbumListViewModel(repository);
 
             return vm;
@@ -32,7 +32,7 @@ namespace MyJournal.ApiControllers
         {
             //add to the database
 
-            IResourceRepository repository = new ResourceRepository.ResourceRepository();
+            IResourceRepository repository = new ResourceRepository();
             await repository.AddAlbum(album);
             return album;
      
@@ -40,7 +40,7 @@ namespace MyJournal.ApiControllers
 
         public Album GetAlbum(string id)
         {
-            IResourceRepository repository = new ResourceRepository.ResourceRepository();
+            IResourceRepository repository = new ResourceRepository();
 
             try
             {
@@ -58,7 +58,7 @@ namespace MyJournal.ApiControllers
         public void Upload(string id)
         {
             System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
-            ResourceRepository.ResourceRepository repository = new ResourceRepository.ResourceRepository();
+            ResourceRepository repository = new ResourceRepository();
 
             for(int i=0; i< files.Count; i++)
             {
@@ -67,7 +67,7 @@ namespace MyJournal.ApiControllers
                 string name = file.FileName;
                 using (Stream fileStream = file.InputStream)
                 {
-                    repository.SaveFile(fileStream);
+                    repository.SaveFile(fileStream, name);
                 }
             }
         }
