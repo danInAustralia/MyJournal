@@ -15,6 +15,9 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using System.Security.Cryptography;
 using System.IO;
+using ResourceRepository;
+using NHibernate;
+using NHibernate.Criterion;
 
 namespace Repository
 {
@@ -33,31 +36,54 @@ namespace Repository
         {
             List<Album> list = new List<Album>();
 
-            if (predicate != null)
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
             {
-                list = client.CreateDocumentQuery<Album>(
-                        UriFactory.CreateDocumentCollectionUri(DatabaseID, CollectionID))
-                    .Where(predicate)
-                    .AsEnumerable().ToList();
+                using (session.BeginTransaction())
+                {
+                    list = session.CreateCriteria(typeof(Album)).List<Album>().ToList();
+                }
             }
-            else
-            {
-                list = client.CreateDocumentQuery<Album>(
-                        UriFactory.CreateDocumentCollectionUri(DatabaseID, CollectionID))
-                    .AsEnumerable().ToList();
-            }
+
             return list;
         }
 
-        public bool ResourceExists(ResourceModel.Resource resource)
+        public bool ResourceExists(String hashID)
         {
-            bool docExists = client.CreateDocumentQuery(UriFactory.CreateCollectionUri(DatabaseID, CollectionID))
-                    .Where(doc => doc.Id == "document id")
-                    .Select(doc => doc.Id)
-                    .AsEnumerable()
-                    .Any();
+            bool docExists = false;
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                using (session.BeginTransaction())
+                {
+                    ResourceModel.Resource r = session.CreateCriteria(typeof(ResourceModel.Resource)).Add(Restrictions.Eq("Md5", hashID)).UniqueResult<ResourceModel.Resource>();
+                    if(r != null)
+                    {
+                        docExists = true;
+                    }
+                }
+            }
 
             return docExists;
+        }
+
+        public void SaveAlbum(Album album)
+        {
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    //try
+                    {
+                        session.SaveOrUpdate(album);
+                        session.Transaction.Commit();
+                    }
+                }
+            }
         }
 
         public async Task<Document> AddAlbum(Album album)
