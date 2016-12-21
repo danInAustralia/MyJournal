@@ -8,7 +8,7 @@ namespace ResourceModel
 {
     public class Tag
     {
-        public int ID { get; set; }
-        public String TagName { get; set; }
+        public virtual int ID { get; set; }
+        public virtual String TagName { get; set; }
     }
 }

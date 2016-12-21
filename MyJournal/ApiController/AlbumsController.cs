@@ -22,7 +22,7 @@ namespace MyJournal.ApiControllers
         public AlbumListViewModel GetAllAlbums()
         {
             AlbumListViewModelFactory albumListFactory = new AlbumListViewModelFactory();
-            IResourceRepository repository = new ResourceRepository();
+            IResourceRepository repository = new Repository.ResourceRepository();
             AlbumListViewModel vm = albumListFactory.GetAlbumListViewModel(repository);
 
             return vm;
@@ -32,7 +32,7 @@ namespace MyJournal.ApiControllers
         {
             //add to the database
 
-            IResourceRepository repository = new ResourceRepository();
+            IResourceRepository repository = new Repository.ResourceRepository();
             await repository.AddAlbum(album);
             return album;
      
@@ -40,7 +40,7 @@ namespace MyJournal.ApiControllers
 
         public Album GetAlbum(string id)
         {
-            IResourceRepository repository = new ResourceRepository();
+            IResourceRepository repository = new Repository.ResourceRepository();
 
             try
             {
@@ -58,7 +58,7 @@ namespace MyJournal.ApiControllers
         public void Upload(string id)
         {
             System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
-            ResourceRepository repository = new ResourceRepository();
+            Repository.ResourceRepository repository = new Repository.ResourceRepository();
 
             for(int i=0; i< files.Count; i++)
             {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ResourceRepository.Mapping
+namespace Repository.Mapping
 {
     public class TagMap : ClassMap<Tag>
     {

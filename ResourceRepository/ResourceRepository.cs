@@ -15,7 +15,7 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using System.Security.Cryptography;
 using System.IO;
-using ResourceRepository;
+using Repository;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -128,7 +128,7 @@ namespace Repository
 
                             if(ReferenceService.IsValidImage(fileStream))
                             {
-                                resource.Type = "Image";
+                                //resource.Type = "Image";
                                 resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
                             }
 
@@ -141,7 +141,7 @@ namespace Repository
                             //};
                             //tr.UploadAsync(tuu);
 
-                            if (!ResourceExists(resource))
+                            //if (!ResourceExists(resource))
                             {
                                 //upload the file
                                 tr.Upload(fileStream, "piccoli", md5Sum);

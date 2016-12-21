@@ -9,12 +9,12 @@ namespace ResourceModel
 {
     public class Album
     {
-        public int ID { get; set; }
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public virtual int ID { get; set; }
+        public virtual String Name { get; set; }
+        public virtual String Description { get; set; }
 
-        public DateTime AlbumDate { get; set; }
-        public List<Resource> Resources = new List<Resource>();
-        public User Owner { get; set; }
+        public virtual DateTime AlbumDate { get; set; }
+        public virtual IList<Resource> Resources { get; set; }
+        public virtual User Owner { get; set; }
     }
 }

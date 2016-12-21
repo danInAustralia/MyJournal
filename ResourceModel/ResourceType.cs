@@ -8,7 +8,7 @@ namespace ResourceModel
 {
     public class ResourceType
     {
-        public int ID { get; set; }
-        public int Type { get; set; }
+        public virtual int ID { get; set; }
+        public virtual int Type { get; set; }
     }
 }
