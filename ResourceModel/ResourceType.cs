@@ -9,6 +9,6 @@ namespace ResourceModel
     public class ResourceType
     {
         public virtual int ID { get; set; }
-        public virtual int Type { get; set; }
+        public virtual String Type { get; set; }
     }
 }

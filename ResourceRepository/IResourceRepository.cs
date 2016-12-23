@@ -12,14 +12,14 @@ namespace Repository
 {
     public interface IResourceRepository
     {
-        void SaveFile(Stream fileStream, String originalName);
+        ResourceModel.Resource SaveFile(ReferenceRepository r, ResourceModel.User owner, Stream fileStream, String originalName);
 
-        int AddTagToFile(String md5, Tag tag);
+        //int AddTagToResource(ResourceModel.Resource resource, Tag tag);
 
         int AddToAlbum(String albumName, ResourceModel.Resource resource);
 
-        Task<Document> AddAlbum(Album album);
+        void AddAlbum(Album album);
 
-        List<Album> GetAlbums(Expression<Func<Album, bool>> predicate);
+        List<Album> GetAlbums(Func<Album, bool> predicate);
     }
 }

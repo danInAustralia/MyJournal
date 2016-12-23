@@ -25,14 +25,8 @@ namespace Repository
     {
         private static readonly string DatabaseID = WebConfigurationManager.AppSettings["database"];
         private static readonly string CollectionID = WebConfigurationManager.AppSettings["collection"];
-        private static DocumentClient client;
 
-        public ResourceRepository()
-        {
-            client = new DocumentClient(new Uri(WebConfigurationManager.AppSettings["endpoint"]), WebConfigurationManager.AppSettings["authKey"]);
-        }
-
-        public List<Album> GetAlbums(Expression<Func<Album, bool>> predicate)
+        public List<Album> GetAlbums(Func<Album, bool> predicate)
         {
             List<Album> list = new List<Album>();
 
@@ -42,7 +36,14 @@ namespace Repository
             {
                 using (session.BeginTransaction())
                 {
-                    list = session.CreateCriteria(typeof(Album)).List<Album>().ToList();
+                    if (predicate != null)
+                    {
+                        list = session.CreateCriteria(typeof(Album)).List<Album>().Where(predicate).ToList();
+                    }
+                    else
+                    {
+                        list = session.CreateCriteria(typeof(Album)).List<Album>().ToList();
+                    }
                 }
             }
 
@@ -86,68 +87,119 @@ namespace Repository
             }
         }
 
-        public async Task<Document> AddAlbum(Album album)
+        public void SaveResource(ResourceModel.Resource resource)
         {
-            return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseID, CollectionID), album);
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    //try
+                    {
+                        session.SaveOrUpdate(resource);
+                        session.Transaction.Commit();
+                    }
+                }
+            }
         }
 
-        public int AddTagToFile(string md5, ResourceModel.Tag tag)
+        public void AddAlbum(Album album)
         {
-            throw new NotImplementedException();
+            SaveAlbum(album);
         }
+
+        //Dont need this. Just need to add the tag to the resource model,
+        //then save the resource
+        //public int AddTagToResource(string md5, ResourceModel.Tag tag)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public int AddToAlbum(string albumName, ResourceModel.Resource resource)
         {
-            throw new NotImplementedException();
+            int resourcesAdded = 0;
+            Album album = GetAlbums(x => x.Name == albumName).FirstOrDefault();
+
+            if(album != null)
+            {
+                album.AddResource(resource);
+
+                //save the updated album to the database
+
+
+                resourcesAdded++;
+            }
+            return resourcesAdded;
         }
 
-        public void SaveFile(Stream fileStream, String originalName)
+        /// <summary>
+        /// Saves a NEW resource. Only saves if resource with the MD5Sum has not previously been added.
+        /// </summary>
+        /// <param name="referenceRepository"></param>
+        /// <param name="fileStream"></param>
+        /// <param name="originalName"></param>
+        /// <returns></returns>
+        public ResourceModel.Resource SaveFile(ReferenceRepository referenceRepository,
+            ResourceModel.User owner,
+            Stream fileStream, 
+            String originalName)
         {
-            IAmazonS3 s3Client = new AmazonS3Client();
-
+            ResourceModel.Resource resource = null;
+            ResourceType imageRT = referenceRepository.AllResourceTypes().Where(x => x.Type == "Image").FirstOrDefault();
+            ResourceType otherRT = referenceRepository.AllResourceTypes().Where(x => x.Type == "Other").FirstOrDefault();
+            //User user = reference
 
             try
             {
-                ListBucketsResponse response = s3Client.ListBuckets();
 
-                using (TransferUtility tr = new TransferUtility(s3Client))
+                //calculate md5 of the file to upload
+                string md5Sum = String.Empty;
+                using (var md5 = MD5.Create())
                 {
-                    //calculate md5 of the file to upload
-                    string md5Sum = String.Empty;
-                    using (var md5 = MD5.Create())
+                    md5Sum = BitConverter.ToString(md5.ComputeHash(fileStream)).Replace("-", "").ToLower();
+
+                    if (!ResourceExists(md5Sum))
                     {
+                        //create the resource object
+                        resource = new ResourceModel.Resource
                         {
-                            md5Sum = BitConverter.ToString(md5.ComputeHash(fileStream)).Replace("-", "").ToLower();
+                            Md5 = md5Sum,
+                            OriginalFileName = originalName,
+                            Owner = owner
+                        };
 
-                            //create the resource object
-                            ResourceModel.Resource resource = new ResourceModel.Resource
-                            {
-                                Md5 = md5Sum,
-                                OriginalFileName = originalName
-                            };
+                        if (ReferenceService.IsValidImage(fileStream))
+                        {
+                            resource.Type = imageRT;
+                            //resource.Type = "Image";
+                            resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
 
-                            if(ReferenceService.IsValidImage(fileStream))
-                            {
-                                //resource.Type = "Image";
-                                resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
-                            }
+                        }
+                        else
+                        {
+                            resource.Type = otherRT;
+                            resource.Date = null;
+                        }
 
-                            //fileStream.Position = 0;
-                            //TransferUtilityUploadRequest tuu = new TransferUtilityUploadRequest
-                            //{
-                            //    InputStream = fileStream,
-                            //    BucketName = "piccoli",
-                            //    Key = "belvedere"
-                            //};
-                            //tr.UploadAsync(tuu);
+                        //fileStream.Position = 0;
+                        //TransferUtilityUploadRequest tuu = new TransferUtilityUploadRequest
+                        //{
+                        //    InputStream = fileStream,
+                        //    BucketName = "piccoli",
+                        //    Key = "belvedere"
+                        //};
+                        //tr.UploadAsync(tuu);
 
-                            //if (!ResourceExists(resource))
-                            {
-                                //upload the file
-                                tr.Upload(fileStream, "piccoli", md5Sum);
-                                //update the database
+                        //upload the file
+                        IAmazonS3 s3Client = new AmazonS3Client();
+                        ListBucketsResponse response = s3Client.ListBuckets();
 
-                            }
+                        using (TransferUtility tr = new TransferUtility(s3Client))
+                        {
+                            tr.Upload(fileStream, "piccoli", md5Sum);
+                            //update the database
+                            SaveResource(resource);
                         }
                     }
                 }
@@ -156,6 +208,8 @@ namespace Repository
             {
 
             }
+
+            return resource;
         }
     }
 }

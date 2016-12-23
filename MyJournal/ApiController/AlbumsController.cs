@@ -33,7 +33,7 @@ namespace MyJournal.ApiControllers
             //add to the database
 
             IResourceRepository repository = new Repository.ResourceRepository();
-            await repository.AddAlbum(album);
+            repository.AddAlbum(album);
             return album;
      
         }
@@ -54,20 +54,36 @@ namespace MyJournal.ApiControllers
             }
         }
 
+        /// <summary>
+        /// Uploads a resource and adds it to an album
+        /// </summary>
+        /// <param name="id"></param>
         [HttpPut]
         public void Upload(string id)
         {
-            System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
-            Repository.ResourceRepository repository = new Repository.ResourceRepository();
-
-            for(int i=0; i< files.Count; i++)
+            if (id != null)
             {
-                HttpPostedFile file = files[i];
+                System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+                Repository.ResourceRepository repository = new Repository.ResourceRepository();
+                ReferenceRepository refRepository = new ReferenceRepository();
+                UserRepository ur = new UserRepository();
+                User user = ur.Get("piccoli.dan@gmail.com");
+                Album album = repository.GetAlbums(x => x.Name == id).FirstOrDefault();
 
-                string name = file.FileName;
-                using (Stream fileStream = file.InputStream)
+                for (int i = 0; i < files.Count; i++)
                 {
-                    repository.SaveFile(fileStream, name);
+                    HttpPostedFile file = files[i];
+
+                    string name = file.FileName;
+                    using (Stream fileStream = file.InputStream)
+                    {
+                        Resource myResource = repository.SaveFile(refRepository, user, fileStream, name);
+                        if (myResource != null)
+                        {
+                            album.AddResource(myResource);
+                            repository.SaveAlbum(album);
+                        }
+                    }
                 }
             }
         }
