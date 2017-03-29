@@ -18,6 +18,7 @@ using System.IO;
 using Repository;
 using NHibernate;
 using NHibernate.Criterion;
+using ResourceRepository;
 
 namespace Repository
 {
@@ -107,6 +108,16 @@ namespace Repository
         public void AddAlbum(Album album)
         {
             SaveAlbum(album);
+        }
+
+        public Stream GetResourceStream(string resourceID)
+        {
+            IAmazonS3 s3Client = new AmazonS3Client();
+
+            using (TransferUtility tr = new TransferUtility(s3Client))
+            {
+                return tr.OpenStream("piccoli", "01670b7a50cd8e5314a29782b777c151");
+            }
         }
 
         //Dont need this. Just need to add the tag to the resource model,

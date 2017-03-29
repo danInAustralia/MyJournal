@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web;
 using System.IO;
+using System;
 
 namespace MyJournal.ApiControllers
 {
-    public class AlbumsController : ApiController
+    public class AlbumsController : System.Web.Http.ApiController
     {
         /// <summary>
         /// returns a JSON representation of the albums returned from repository.
@@ -87,5 +88,8 @@ namespace MyJournal.ApiControllers
                 }
             }
         }
+
+
+
     }
 }

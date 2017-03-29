@@ -11,7 +11,7 @@ angular.module('Journal.AlbumListController', [])
 
         albumProvider.getAlbums(function (err, albums) {
             if (err) {
-                $scope.page_load_error = "Unexpected error loading albums: " + e.message;
+                $scope.page_load_error = "Unexpected error loading albums: " + err.message;
             } else {
                 $scope.Albums = albums;
             }
