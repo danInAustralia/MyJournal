@@ -116,7 +116,7 @@ namespace Repository
 
             using (TransferUtility tr = new TransferUtility(s3Client))
             {
-                return tr.OpenStream("piccoli", "01670b7a50cd8e5314a29782b777c151");
+                return tr.OpenStream("piccoli", resourceID);
             }
         }
 
