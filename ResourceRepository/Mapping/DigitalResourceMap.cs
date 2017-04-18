@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Mapping
 {
-    public class ResourceMap : ClassMap<Resource>
+    public class ResourceMap : ClassMap<DigitalResource>
     {
         public ResourceMap()
         {

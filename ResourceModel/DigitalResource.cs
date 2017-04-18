@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResourceModel
 {
-    public class Resource
+    public class DigitalResource
     {
         public virtual String Md5 { get; set; }
         //public String Path { get; set; }
@@ -16,6 +16,18 @@ namespace ResourceModel
         public virtual String Description { get; set; }
         public virtual DateTime? Date { get; set; }
         public virtual User Owner { get; set; }
+
+        public virtual void AddTag(Tag tag)
+        {
+            if(tag.ID == 0)
+            {
+                throw new Exception("Unsaved tag");
+            }
+            if (!Tags.Contains(tag))
+            {
+                Tags.Add(tag);
+            }
+        }
     }
 
 

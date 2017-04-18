@@ -243,6 +243,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\arrow.png" />
+    <Content Include="images\arrow_list.png" />
+    <Content Include="images\buttonbg.jpg" />
+    <Content Include="images\info.png" />
+    <Content Include="images\lightsidecolbg.jpg" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\navbg.jpg" />
+    <Content Include="images\pagetitlebg.jpg" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\angular-animate.js" />

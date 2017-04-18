@@ -25,6 +25,22 @@
         <button type="button" class="btn btn-success">Add files to this album</button>
     </a>
 
+    <md-autocomplete ng-disabled="false"
+                     md-no-cache="true"
+                     md-selected-item="selectedOption"
+                     md-search-text="searchText"
+                     md-items="item in options"
+                     md-item-text="item.Key"
+                     md-min-length="0"
+                     placeholder="Search query?">
+        <md-item-template>
+            <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Value}}</span>
+        </md-item-template>
+        <md-not-found>
+            No matches for "{{searchText}}" were found.
+        </md-not-found>
+    </md-autocomplete>
+
     <div style="clear: left"></div>
 
     <div class="photo thumbnail" ng-repeat="resource in album.Resources | limitTo:10" style="width: 400px; float: left; margin-right: 10px">

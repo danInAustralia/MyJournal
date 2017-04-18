@@ -461,7 +461,7 @@ cite {
   text-align: center;
 }
 
-h1,
+/*h1,
 h2,
 h3,
 h4,
@@ -476,7 +476,7 @@ h6,
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
-}
+}*/
 
 h1 small,
 h2 small,
@@ -1104,9 +1104,6 @@ pre code {
   .col-md-3 {
     width: 25%;
   }
-  .col-md-4 {
-    width: 33.33333333333333%;
-  }
   .col-md-5 {
     width: 41.66666666666667%;
   }
@@ -1633,11 +1630,11 @@ table th[class*="col-"] {
   }
 }
 
-fieldset {
-  padding: 0;
+/*fieldset {
+  padding: 5;
   margin: 0;
-  border: 0;
-}
+  border: 1;
+}*/
 
 legend {
   display: block;
@@ -1678,6 +1675,8 @@ input[type="file"] {
 
 select[multiple],
 select[size] {
+  /*float:left;*/
+  clear: both;
   height: auto;
 }
 

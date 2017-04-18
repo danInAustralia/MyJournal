@@ -14,16 +14,16 @@ namespace ResourceModel
         public virtual String Description { get; set; }
 
         public virtual DateTime AlbumDate { get; set; }
-        public virtual IList<Resource> Resources { get; set; }
+        public virtual IList<DigitalResource> Resources { get; set; }
         public virtual User Owner { get; set; }
 
         /// <summary>
         /// Adds a resource if a resource with the MD5 hash has not been added previously
         /// </summary>
         /// <param name="resource">resource to add</param>
-        public virtual void AddResource(Resource resource)
+        public virtual void AddResource(DigitalResource resource)
         {
-            Resource foundResource = (from r in Resources
+            DigitalResource foundResource = (from r in Resources
                                  where r.Md5 == resource.Md5
                                  select r).FirstOrDefault();
 

@@ -2,20 +2,36 @@
     .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http',
         function ($scope, $routeParams, albumProvider, $location, $http) {
 
+            $scope.testing = true;
+            //test for autocomplete
+            $scope.searchText = "";
+            $scope.selectedOption = {};
+            $scope.options = [
+                { Key: "1", Value: "One" },
+                { Key: "2", Value: "Two" },
+                { Key: "3", Value: "Three" },
+            ]
+
         //$scope.album_name = $routeParams.album_name;
         $scope.page_load_error = "";
 
         $scope.init = function (albumName) {
-            albumProvider.getAlbumByName(albumName, function (err, album) {
-                if (err) {
-                    if (err.error == "not_found")
-                        $scope.page_load_error = "No such album. Are you calling this right?";
-                    else
-                        $scope.page_load_error = "Unexpected error loading albums: " + err.message;
-                } else {
-                    $scope.album = album;
-                }
-            });
+            if (!$scope.testing) {
+                albumProvider.getAlbumByName(albumName, function (err, album) {
+                    if (err) {
+                        if (err.error == "not_found")
+                            $scope.page_load_error = "No such album. Are you calling this right?";
+                        else
+                            $scope.page_load_error = "Unexpected error loading albums: " + err.message;
+                    } else {
+                        $scope.album = album;
+                    }
+                });
+            }
+            else
+            {
+                $scope.album = albumProvider.getTestAlbum();
+            }
         }
 
         $scope.getImage = function (resourceURL) {

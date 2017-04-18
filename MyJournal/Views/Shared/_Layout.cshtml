@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="/Content/site.css" rel="stylesheet" />
-    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <title>My Journal</title>
+    <link href='https://fonts.googleapis.com/css?family=Jura:500,600' rel='stylesheet' type='text/css'>
 
-    @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular-animate.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.js"></script>
@@ -27,38 +26,34 @@
         appInsights.trackPageView();
     </script>
 </head>
-<body id="overrides">
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body>
+    <header>
+        <div class="wrapper">
+            <nav>
+                <ul class="sf-menu sf-js-enabled">
+                    <li>@Html.ActionLink("My Journal", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Your Albums", "Index", "Albums")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </nav>
+            <div id="logo">
+                <a href="http://iiid.murdoch.edu.au/">My Journal Logo</a>
+            </div>
+            <div class="enquire_btn">@Html.ActionLink("Contact", "Contact", "Home")</div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("Your Albums", "Index", "Albums")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-            </ul>
-            @Html.Partial("_LoginPartial")
-        </div>
+    </header>
+    <div class="sitecontainer body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My Journal</p>
+        </footer>
     </div>
-</div>
-<div class="container body-content">
-    @RenderBody()
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-    </footer>
-</div>
 
 @Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
+@*@Scripts.Render("~/bundles/bootstrap")*@
 @RenderSection("scripts", required: false)
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>

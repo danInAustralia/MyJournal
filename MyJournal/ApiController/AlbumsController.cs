@@ -78,7 +78,7 @@ namespace MyJournal.ApiControllers
                     string name = file.FileName;
                     using (Stream fileStream = file.InputStream)
                     {
-                        Resource myResource = repository.SaveFile(refRepository, user, fileStream, name);
+                        DigitalResource myResource = repository.SaveFile(refRepository, user, fileStream, name);
                         if (myResource != null)
                         {
                             album.AddResource(myResource);

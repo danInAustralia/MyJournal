@@ -20,7 +20,7 @@ namespace MyJournal.Factories
                     Name = "New Album",
                     Description = "New Album description...",
                     AlbumDate = DateTime.Today,
-                    Resources = new List<ResourceModel.Resource>()
+                    Resources = new List<ResourceModel.DigitalResource>()
                 }
             };
             return vm;

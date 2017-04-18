@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResourceModel
 {
-    public class ImageResource : Resource
+    public class ImageResource : DigitalResource
     {
     }
 }

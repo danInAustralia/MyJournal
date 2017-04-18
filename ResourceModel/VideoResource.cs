@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResourceModel
 {
-    public class VideoResource : Resource
+    public class VideoResource : DigitalResource
     {
         bool Interlaced { get; set; }
     }

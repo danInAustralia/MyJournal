@@ -51,6 +51,26 @@ namespace Repository
             return list;
         }
 
+        public DigitalResource Get(string id)
+        {
+            DigitalResource resource;// list = new List<Resource>();
+
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                using (session.BeginTransaction())
+                {
+                        //session.CreateCriteria(typeof(DigitalResource)).ToList();
+                        resource = session.QueryOver<DigitalResource>()
+                                        .Where(x => x.Md5 == id)
+                                        .List().FirstOrDefault();
+                }
+            }
+
+            return resource;
+        }
+
         public bool ResourceExists(String hashID)
         {
             bool docExists = false;
@@ -60,7 +80,7 @@ namespace Repository
             {
                 using (session.BeginTransaction())
                 {
-                    ResourceModel.Resource r = session.CreateCriteria(typeof(ResourceModel.Resource)).Add(Restrictions.Eq("Md5", hashID)).UniqueResult<ResourceModel.Resource>();
+                    ResourceModel.DigitalResource r = session.CreateCriteria(typeof(ResourceModel.DigitalResource)).Add(Restrictions.Eq("Md5", hashID)).UniqueResult<ResourceModel.DigitalResource>();
                     if(r != null)
                     {
                         docExists = true;
@@ -88,7 +108,7 @@ namespace Repository
             }
         }
 
-        public void SaveResource(ResourceModel.Resource resource)
+        public void SaveResource(ResourceModel.DigitalResource resource)
         {
             var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
 
@@ -127,7 +147,7 @@ namespace Repository
         //    throw new NotImplementedException();
         //}
 
-        public int AddToAlbum(string albumName, ResourceModel.Resource resource)
+        public int AddToAlbum(string albumName, ResourceModel.DigitalResource resource)
         {
             int resourcesAdded = 0;
             Album album = GetAlbums(x => x.Name == albumName).FirstOrDefault();
@@ -151,12 +171,12 @@ namespace Repository
         /// <param name="fileStream"></param>
         /// <param name="originalName"></param>
         /// <returns></returns>
-        public ResourceModel.Resource SaveFile(ReferenceRepository referenceRepository,
+        public ResourceModel.DigitalResource SaveFile(ReferenceRepository referenceRepository,
             ResourceModel.User owner,
             Stream fileStream, 
             String originalName)
         {
-            ResourceModel.Resource resource = null;
+            ResourceModel.DigitalResource resource = null;
             ResourceType imageRT = referenceRepository.AllResourceTypes().Where(x => x.Type == "Image").FirstOrDefault();
             ResourceType otherRT = referenceRepository.AllResourceTypes().Where(x => x.Type == "Other").FirstOrDefault();
             //User user = reference
@@ -173,7 +193,7 @@ namespace Repository
                     if (!ResourceExists(md5Sum))
                     {
                         //create the resource object
-                        resource = new ResourceModel.Resource
+                        resource = new ResourceModel.DigitalResource
                         {
                             Md5 = md5Sum,
                             OriginalFileName = originalName,

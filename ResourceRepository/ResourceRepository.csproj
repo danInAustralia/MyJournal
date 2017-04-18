@@ -73,7 +73,7 @@
   <ItemGroup>
     <Compile Include="IResourceRepository.cs" />
     <Compile Include="Mapping\AlbumMap.cs" />
-    <Compile Include="Mapping\ResourceMap.cs" />
+    <Compile Include="Mapping\DigitalResourceMap.cs" />
     <Compile Include="Mapping\ResourceTypeMap.cs" />
     <Compile Include="Mapping\TagMap.cs" />
     <Compile Include="Mapping\UserMap.cs" />
@@ -81,6 +81,7 @@
     <Compile Include="ReferenceRepository.cs" />
     <Compile Include="ResourceRepository.cs" />
     <Compile Include="SessionFactoryCreator.cs" />
+    <Compile Include="TagRepository.cs" />
     <Compile Include="UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿using Repository;
+using ResourceModel;
+using ResourceRepository;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -44,6 +46,17 @@ namespace MyJournal.ApiController
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
             response.Content.Headers.ContentLength = stream.Length;
             return response;
+        }
+
+        public void AddTag(string resourceID, string tag)
+        {
+            Repository.ResourceRepository repository = new Repository.ResourceRepository();
+            TagRepository tagRepository = new TagRepository();
+
+            DigitalResource resource = repository.Get(resourceID);
+            Tag tagToAdd = tagRepository.GetOrAdd(tag);
+
+            resource.AddTag(tagToAdd);
         }
     }
 }
