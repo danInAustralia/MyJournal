@@ -40,6 +40,13 @@
                 date: d.getFullYear() + "/" + d.getMonth() + "/" + d.getDate()
             }];
         });
+
+        $scope.uploader.onSuccessItem = function(event, item, response, status, headers) {
+            //verify MD5 of items
+            //$http.get().success(){}
+            var fn = item.file.name;
+        };
+
     }
 
 

@@ -9,6 +9,9 @@ using System.Web.Http;
 using System.Web;
 using System.IO;
 using System;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace MyJournal.ApiControllers
 {
@@ -55,38 +58,52 @@ namespace MyJournal.ApiControllers
             }
         }
 
+        public bool GetDoesMd5Exist(string md5)
+        {
+            return true;
+        }
+
         /// <summary>
         /// Uploads a resource and adds it to an album
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="albumID"></param>
         [HttpPut]
-        public void Upload(string id)
+        public IHttpActionResult Upload(string albumID)
         {
-            if (id != null)
+            HttpResponseMessage response = new HttpResponseMessage();
+            var httpRequest = HttpContext.Current.Request;
+            DigitalResource myResource = null;
+            //DigitalResource resource = null;
+            if (albumID != null)
             {
                 System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
                 Repository.ResourceRepository repository = new Repository.ResourceRepository();
                 ReferenceRepository refRepository = new ReferenceRepository();
                 UserRepository ur = new UserRepository();
                 User user = ur.Get("piccoli.dan@gmail.com");
-                Album album = repository.GetAlbums(x => x.Name == id).FirstOrDefault();
+                Album album = repository.GetAlbums(x => x.Name == albumID).FirstOrDefault();
 
-                for (int i = 0; i < files.Count; i++)
+                //for (int i = 0; i < files.Count; i++)
                 {
-                    HttpPostedFile file = files[i];
+                    HttpPostedFile file = files[0];
 
                     string name = file.FileName;
                     using (Stream fileStream = file.InputStream)
                     {
-                        DigitalResource myResource = repository.SaveFile(refRepository, user, fileStream, name);
+                        myResource = repository.SaveFile(refRepository, user, fileStream, name);
                         if (myResource != null)
                         {
                             album.AddResource(myResource);
                             repository.SaveAlbum(album);
                         }
+                        //resource = myResource;
+                        //response.Content = new StringContent("{\"Md5\": \""+ "12345" + "\"");
+                        //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     }
                 }
             }
+
+            return Ok(myResource);
         }
 
 

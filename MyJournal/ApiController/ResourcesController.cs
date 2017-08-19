@@ -48,6 +48,11 @@ namespace MyJournal.ApiController
             return response;
         }
 
+        public bool DoesMd5Exist(string md5)
+        {
+            return true;
+        }
+
         public void AddTag(string resourceID, string tag)
         {
             Repository.ResourceRepository repository = new Repository.ResourceRepository();

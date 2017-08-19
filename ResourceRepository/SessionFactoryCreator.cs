@@ -13,8 +13,10 @@ namespace ResourceRepository
     {
         public static ISessionFactory CreateSessionFactory()
         {
+            string connectionStr = System.Configuration.ConfigurationManager.
+    ConnectionStrings["ResourcesDatabase"].ConnectionString;
             return Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2012.ConnectionString("Server=tcp:resources.c01idgplymz3.ap-southeast-2.rds.amazonaws.com,1433;Initial Catalog=resources;Persist Security Info=False;User ID=piccoli;Password=8fs703DDMu;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"))//Data Source=s9kgsjykm8.database.windows.net;Initial Catalog=iiidCore;User ID=IIIDTest@s9kgsjykm8;Password=p@sswOrd;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"))
+                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionStr))//Data Source=s9kgsjykm8.database.windows.net;Initial Catalog=iiidCore;User ID=IIIDTest@s9kgsjykm8;Password=p@sswOrd;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"))
                 .Mappings(x => x.FluentMappings.AddFromAssemblyOf<SessionFactoryCreator>())
                 .BuildSessionFactory();
         }
