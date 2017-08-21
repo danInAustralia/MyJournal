@@ -12,7 +12,7 @@
     <div class="alert alert-danger" ng-show="page_load_error">{{page_load_error}}</div>
 
     <p>
-        <input ng-file-select type="file" multiple />
+        <input nv-file-select type="file" multiple uploader="uploader"/>
     </p>
 
     <div style="border-radius: 4px; float: left; border: 1px solid #bbb; height: 200px; width: 300px; padding: 10px; margin-right: 10px; margin-bottom: 10px" ng-repeat="item in uploader.queue">
@@ -49,6 +49,8 @@
         <button class="btn btn-warning" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">Cancel all</button>
         <button class="btn btn-danger" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">Remove all</button>
     </div>
+
+    <p>{{uploader.queue.length}} files ready to upload</p>
 
 
 

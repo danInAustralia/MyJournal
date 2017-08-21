@@ -18,9 +18,9 @@
         //        $scope.album = album;
         //    }
         //});
-        $scope.uploader.bind("completeall", function (event, items) {
+        $scope.uploader.onCompleteall = function () {
             $scope.done_uploading = true;
-        });
+        };
 
 
         $scope.uploadFiles = function () {
@@ -31,7 +31,7 @@
 
         // FOR DESCRIPTIONS
         $scope.descriptions = {};
-        $scope.uploader.bind('beforeupload', function (event, item) {
+        $scope.uploader.onBeforeUploadItem = function (item) {
             var fn = item.file.name;
             var d = item.file.lastModifiedDate;
             item.formData = [{
@@ -39,9 +39,9 @@
                 description: $scope.descriptions[item.file.name],
                 date: d.getFullYear() + "/" + d.getMonth() + "/" + d.getDate()
             }];
-        });
+        };
 
-        $scope.uploader.onSuccessItem = function(event, item, response, status, headers) {
+        $scope.uploader.onSuccessItem = function(item, response, status, headers) {
             //verify MD5 of items
             //$http.get().success(){}
             var fn = item.file.name;
