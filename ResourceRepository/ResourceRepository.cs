@@ -164,6 +164,15 @@ namespace Repository
             return resourcesAdded;
         }
 
+        String Md5Hash(Stream fileStream)
+        {
+            using (var md5 = MD5.Create())
+            {
+                String md5Sum = BitConverter.ToString(md5.ComputeHash(fileStream)).Replace("-", "").ToLower();
+                return md5Sum;
+            }
+        }
+
         /// <summary>
         /// Saves a NEW resource. Only saves if resource with the MD5Sum has not previously been added.
         /// </summary>
@@ -185,53 +194,49 @@ namespace Repository
             {
 
                 //calculate md5 of the file to upload
-                string md5Sum = String.Empty;
-                using (var md5 = MD5.Create())
+                string md5Sum = Md5Hash(fileStream);
+                
+                if (!ResourceExists(md5Sum))
                 {
-                    md5Sum = BitConverter.ToString(md5.ComputeHash(fileStream)).Replace("-", "").ToLower();
-
-                    if (!ResourceExists(md5Sum))
+                    //create the resource object
+                    resource = new ResourceModel.DigitalResource
                     {
-                        //create the resource object
-                        resource = new ResourceModel.DigitalResource
-                        {
-                            Md5 = md5Sum,
-                            OriginalFileName = originalName,
-                            Owner = owner
-                        };
+                        Md5 = md5Sum,
+                        OriginalFileName = originalName,
+                        Owner = owner
+                    };
 
-                        if (ReferenceService.IsValidImage(fileStream))
-                        {
-                            resource.Type = imageRT;
-                            //resource.Type = "Image";
-                            resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
+                    if (ReferenceService.IsValidImage(fileStream))
+                    {
+                        resource.Type = imageRT;
+                        //resource.Type = "Image";
+                        resource.Date = ReferenceService.GetDateTakenFromImage(fileStream);
 
-                        }
-                        else
-                        {
-                            resource.Type = otherRT;
-                            resource.Date = null;
-                        }
+                    }
+                    else
+                    {
+                        resource.Type = otherRT;
+                        resource.Date = null;
+                    }
 
-                        //fileStream.Position = 0;
-                        //TransferUtilityUploadRequest tuu = new TransferUtilityUploadRequest
-                        //{
-                        //    InputStream = fileStream,
-                        //    BucketName = "piccoli",
-                        //    Key = "belvedere"
-                        //};
-                        //tr.UploadAsync(tuu);
+                    //fileStream.Position = 0;
+                    //TransferUtilityUploadRequest tuu = new TransferUtilityUploadRequest
+                    //{
+                    //    InputStream = fileStream,
+                    //    BucketName = "piccoli",
+                    //    Key = "belvedere"
+                    //};
+                    //tr.UploadAsync(tuu);
 
-                        //upload the file
-                        IAmazonS3 s3Client = new AmazonS3Client();
-                        ListBucketsResponse response = s3Client.ListBuckets();
+                    //upload the file
+                    IAmazonS3 s3Client = new AmazonS3Client();
+                    ListBucketsResponse response = s3Client.ListBuckets();
 
-                        using (TransferUtility tr = new TransferUtility(s3Client))
-                        {
-                            tr.Upload(fileStream, "piccoli", md5Sum);
-                            //update the database
-                            SaveResource(resource);
-                        }
+                    using (TransferUtility tr = new TransferUtility(s3Client))
+                    {
+                        tr.Upload(fileStream, "piccoli", md5Sum);
+                        //update the database
+                        SaveResource(resource);
                     }
                 }
             }

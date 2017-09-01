@@ -70,6 +70,7 @@ namespace MyJournal.ApiControllers
         [HttpPut]
         public IHttpActionResult Upload(string albumID)
         {
+            //throw new Exception("forced error");
             HttpResponseMessage response = new HttpResponseMessage();
             var httpRequest = HttpContext.Current.Request;
             DigitalResource myResource = null;

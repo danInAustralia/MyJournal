@@ -24,7 +24,11 @@ namespace MyJournal
                 .Include("~/Scripts/moment.min.js")
                 .Include("~/Scripts/angular-file-upload.js")
                 );
-                
+
+            bundles.Add(new ScriptBundle("~/bundles/md5")
+                .Include("~/Scripts/md5.js")
+                );
+
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
