@@ -1344,3 +1344,5 @@ legend {
 
 .modal { overflow: visible; }
 .modal-body { overflow-y: visible; }
+
+body { background-color: #eeeeee !important; padding: 0; margin: 5px !important; overflow-y: scroll; }

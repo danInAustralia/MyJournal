@@ -10,11 +10,6 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/md5")
-    @*<script src="~/Scripts/angular.min.js"></script>
-    <script src="~/Scripts/angular-animate.min.js"></script>*@
-
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-
 
     <script type="text/javascript">
         var appInsights=window.appInsights||function(config){
@@ -34,13 +29,13 @@
                 <ul class="sf-menu sf-js-enabled">
                     <li>@Html.ActionLink("My Journal", "Index", "Home")</li>
                     <li>@Html.ActionLink("Your Albums", "Index", "Albums")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     @Html.Partial("_LoginPartial")
                 </ul>
             </nav>
             <div id="logo">
-                <a href="http://iiid.murdoch.edu.au/">My Journal Logo</a>
+                <a href="http://abc.net.au/">My Journal Logo</a>
             </div>
             <div class="enquire_btn">@Html.ActionLink("Contact", "Contact", "Home")</div>
         </div>
@@ -56,13 +51,6 @@
 @Scripts.Render("~/bundles/jquery")
 @*@Scripts.Render("~/bundles/bootstrap")*@
 @RenderSection("scripts", required: false)
-
-@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
-<script type="text/javascript"  src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-<script type="text/javascript" src="~/Scripts/moment.min.js"></script>
-<script type="text/javascript" src="~/Scripts/angular-file-upload.js"></script>*@
 
 <script type="text/javascript" src="~/app/services/albumprovider.js"></script>
 <script type="text/javascript" src="~/app/app.js"></script>

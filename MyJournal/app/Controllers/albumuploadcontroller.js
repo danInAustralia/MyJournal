@@ -27,30 +27,34 @@
             $scope.uploader.uploadAll();
         }
 
-
+        $scope.uploader.onAfterAddingFile = function (item) {
+            item.uploadStatus = 'Pending';
+            $scope.uploadStatus[item.file.name] = 'Pending';
+        }
 
         // FOR DESCRIPTIONS
         $scope.descriptions = {};
+        $scope.uploadStatus = {};
         $scope.uploader.onBeforeUploadItem = function (item) {
             var fn = item.file.name;
             var d = item.file.lastModifiedDate;
 
 
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                var text = (reader.result);
+            //var reader = new FileReader();
+            //reader.onloadend = function () {
+            //    var text = (reader.result);
 
-                var binary = "";
-                var bytes = new Uint8Array(text);
-                var length = bytes.byteLength;
-                for (var i = 0; i < length; i++) {
-                  binary += String.fromCharCode(bytes[i]);
-                }
+            //    var binary = "";
+            //    var bytes = new Uint8Array(text);
+            //    var length = bytes.byteLength;
+            //    for (var i = 0; i < length; i++) {
+            //      binary += String.fromCharCode(bytes[i]);
+            //    }
 
-                var hash = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binary));
-                var hashStr = hash.toString();
-            }
-            reader.readAsArrayBuffer(item._file);
+            //    var hash = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binary));
+            //    var hashStr = hash.toString();
+            //}
+            //reader.readAsArrayBuffer(item._file);
             //var wordArray = CryptoJS.lib.WordArray.create();
             //console.log(CryptoJS.MD5(wordArray));
 
@@ -62,12 +66,33 @@
         };
 
         $scope.uploader.onSuccessItem = function(item, response, status, headers) {
-            //verify MD5 of items
-            //$http.get().success(){}
-            var reader = FileReader();
-            var wordArray = CryptoJS.lib.WordArray.create();
-            console.log(CryptoJS.MD5(wordArray));
-            var fn = item.file.name;
+            //---verify MD5 of items
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                var text = (reader.result);
+
+                var binary = "";
+                var bytes = new Uint8Array(text);
+                var length = bytes.byteLength;
+                for (var i = 0; i < length; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+
+                var hash = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binary));
+                var hashStr = hash.toString();
+                if(hashStr === response.Md5)
+                {
+                    item.uploadStatus = 'Success';
+                    $scope.uploadStatus[item.file.name] = 'Success';
+                }
+                else
+                {
+                    item.uploadStatus = 'Md5 mismatch';
+                }
+            }
+            reader.readAsArrayBuffer(item._file);
+            //---
+
         };
 
         $scope.uploader.onErrorItem = function (item, response, status, headers) {
