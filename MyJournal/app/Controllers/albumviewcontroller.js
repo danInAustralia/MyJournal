@@ -1,7 +1,7 @@
 ﻿angular.module('Journal.AlbumViewController', [])
     .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http',
         function ($scope, $routeParams, albumProvider, $location, $http) {
-
+            $scope.PageNumber = 1;
             //test for autocomplete
             $scope.searchText = "";
             $scope.selectedOption = {};
@@ -23,9 +23,24 @@
                         $scope.page_load_error = "Unexpected error loading albums: " + err.message;
                 } else {
                     $scope.album = album;
+                    //update view resources
+                    albumProvider.getAlbumResources(albumName, $scope.PageNumber, function(err, resources){
+                        $scope.resources = resources;
+                    });
                 }
             });
         }
+
+        $scope.pageChanged = function () {
+            $scope.PageNumber = $scope.CurrentPage;
+
+            //update view resources
+            albumProvider.getAlbumResources(albumName, $scope.PageNumber, function(err, resources){
+                $scope.resources = resources;
+            });
+        }
+
+        //$scope.AlbumResources = function(page)
 
         $scope.getImage = function (resourceURL) {
             $http.get('http://localhost:52885/api/Resources/'+resourceURL)

@@ -59,6 +59,17 @@ angular.module('Journal.AlbumProvider', [])
                 });
         };
 
+        this.getAlbumResources = function (name, pageNumber, callback) {
+            $http.get("/api/albums/AlbumResources", { params: { AlbumID: name, PageNumber: pageNumber } })
+                .then(function (response) {
+                    callback(null, response.data);
+                },
+                function (data, status, headers, conf) {
+                    // just send back the error
+                    callback(data);
+                });
+        };
+
         this.doesMd5Exist = function (md5, callback) {
             $http.get("/api/resources/" + md5)
                 .success(function (data, status, headers, conf) {

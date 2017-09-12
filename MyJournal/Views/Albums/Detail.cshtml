@@ -53,7 +53,7 @@
 
                 <div style="clear: left"></div>
 
-                <div class="photo thumbnail" ng-repeat="resource in album.Resources | limitTo:10" style="width: 400px; float: left; margin-right: 10px">
+                <div class="photo thumbnail" ng-repeat="resource in album.Resources | limitTo:20" style="width: 400px; float: left; margin-right: 10px">
 
                     <a href="resource/{{resource.Md5}}">
                         @*<img width="400px" data-ng-src="{{'data:image/png;base64,'+getImage(resource.Md5)}}" />*@
@@ -63,9 +63,10 @@
                     <p> {{ photo.Description }} </p>
                 </div>
 
-                <div ng-if="album.Resources.length == 0">
-                    <p>There are no resources in this album.</p>
-                </div>
+                <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
+                <!--<ul uib-pagination total-items="Total" num-pages="5" items-per-page="$parent.filters.selections.CountPerPage" ng-model="$parent.filters.selections.PageNumber" max-size="5" class="pagination-sm" boundary-links="true" rotate="false"></ul>-->
+                <p ng-if="($parent.filters.selections.PageNumber)*($parent.filters.selections.CountPerPage)<=Total">Showing {{($parent.filters.selections.PageNumber - 1)*$parent.filters.selections.CountPerPage + 1}} - {{($parent.filters.selections.PageNumber)*($parent.filters.selections.CountPerPage)}} of {{Total}}</p>
+                <p ng-if="($parent.filters.selections.PageNumber)*($parent.filters.selections.CountPerPage)>Total">Showing {{($parent.filters.selections.PageNumber - 1)*$parent.filters.selections.CountPerPage + 1}} - {{Total}} of {{Total}}</p>
 
                 <div style="clear: left"></div>
 

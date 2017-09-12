@@ -58,6 +58,22 @@ namespace MyJournal.ApiControllers
             }
         }
 
+        [HttpGet]
+        public List<DigitalResource> AlbumResources(string AlbumID, int PageNumber)
+        {
+            IResourceRepository repository = new Repository.ResourceRepository();
+            try
+            {
+                Album album = repository.GetAlbums(a => a.Name == AlbumID).First();
+
+                return album.Resources.Skip((PageNumber-1)*20).Take(20).ToList();
+            }
+            catch
+            {
+                throw new System.Exception("No such album called " + AlbumID);
+            }
+        }
+
         public bool GetDoesMd5Exist(string md5)
         {
             return true;

@@ -84,10 +84,12 @@
                 {
                     item.uploadStatus = 'Success';
                     $scope.uploadStatus[item.file.name] = 'Success';
+                    $scope.uploader.removeFromQueue(item);
                 }
                 else
                 {
                     item.uploadStatus = 'Md5 mismatch';
+                    $scope.uploadStatus[item.file.name] = 'Md5 mismatch';
                 }
             }
             reader.readAsArrayBuffer(item._file);
@@ -98,6 +100,8 @@
         $scope.uploader.onErrorItem = function (item, response, status, headers) {
             //verify MD5 of items
             //$http.get().success(){}
+            item.uploadStatus = 'Md5 mismatch';
+            $scope.uploadStatus[item.file.name] = 'Md5 mismatch';
             var fn = item.file.name;
         };
 
