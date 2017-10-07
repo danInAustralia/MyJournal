@@ -1,7 +1,13 @@
 ﻿angular.module('Journal.AlbumViewController', [])
     .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http',
         function ($scope, $routeParams, albumProvider, $location, $http) {
-            $scope.PageNumber = 1;
+            $scope.Total = 111;
+            $scope.itemsPerPage = 20;
+            $scope.CurrentPage = 1;
+            $scope.pageChanged = function()
+            {
+
+            }
             //test for autocomplete
             $scope.searchText = "";
             $scope.selectedOption = {};
@@ -26,6 +32,9 @@
                     //update view resources
                     albumProvider.getAlbumResources(albumName, $scope.PageNumber, function(err, resources){
                         $scope.resources = resources;
+                        $scope.Total = 111;
+                        $scope.itemsPerPage = 20;
+                        $scope.CurrentPage = 1;
                     });
                 }
             });

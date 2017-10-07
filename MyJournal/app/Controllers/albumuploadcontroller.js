@@ -84,7 +84,8 @@
                 {
                     item.uploadStatus = 'Success';
                     $scope.uploadStatus[item.file.name] = 'Success';
-                    $scope.uploader.removeFromQueue(item);
+                    $scope.$apply();
+                    //$scope.uploader.removeFromQueue(item);
                 }
                 else
                 {

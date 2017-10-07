@@ -11,9 +11,14 @@
             <div class="arrow"></div>
         </div>
     </h1>
+    <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
     <div class="contentbody">
         <div class="wrapper lightsidecol">
             <div id="maincol">
+                <p>something</p>
+                <div>
+                    <ul uib-pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></ul>
+                </div>
                 <div class="album panel panel-primary">
                     <!--  <div class="album panel panel-primary" ng-repeat="album in albums | multifieldfilter:{ title: searchFor } "> -->
                     @*<div>
