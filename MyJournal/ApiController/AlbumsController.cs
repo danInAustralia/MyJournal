@@ -59,14 +59,20 @@ namespace MyJournal.ApiControllers
         }
 
         [HttpGet]
-        public List<DigitalResource> AlbumResources(string AlbumID, int PageNumber)
+        public ResourceListViewModel AlbumResources(string AlbumID, int PageNumber)
         {
             IResourceRepository repository = new Repository.ResourceRepository();
             try
             {
                 Album album = repository.GetAlbums(a => a.Name == AlbumID).First();
 
-                return album.Resources.Skip((PageNumber-1)*20).Take(20).ToList();
+                ResourceListViewModel resourceVM = new ResourceListViewModel
+                {
+                    Resources = album.Resources.Skip((PageNumber - 1) * 20).Take(20).ToList(),
+                    Total = album.Resources.Count
+                };
+
+                return resourceVM;
             }
             catch
             {

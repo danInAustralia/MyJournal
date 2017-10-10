@@ -1,13 +1,10 @@
 ﻿angular.module('Journal.AlbumViewController', [])
     .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http',
         function ($scope, $routeParams, albumProvider, $location, $http) {
-            $scope.Total = 111;
+            $scope.Total = 0;
             $scope.itemsPerPage = 20;
             $scope.CurrentPage = 1;
-            $scope.pageChanged = function()
-            {
 
-            }
             //test for autocomplete
             $scope.searchText = "";
             $scope.selectedOption = {};
@@ -21,6 +18,7 @@
         $scope.page_load_error = "";
 
         $scope.init = function (albumName) {
+            $scope.AlbumName = albumName;
             albumProvider.getAlbumByName(albumName, function (err, album) {
                 if (err) {
                     if (err.error == "not_found")
@@ -30,9 +28,9 @@
                 } else {
                     $scope.album = album;
                     //update view resources
-                    albumProvider.getAlbumResources(albumName, $scope.PageNumber, function(err, resources){
-                        $scope.resources = resources;
-                        $scope.Total = 111;
+                    albumProvider.getAlbumResources(albumName, $scope.CurrentPage, function (err, resources) {
+                        $scope.resources = resources.Resources;
+                        $scope.Total = resources.Total;
                         $scope.itemsPerPage = 20;
                         $scope.CurrentPage = 1;
                     });
@@ -41,18 +39,19 @@
         }
 
         $scope.pageChanged = function () {
-            $scope.PageNumber = $scope.CurrentPage;
-
-            //update view resources
-            albumProvider.getAlbumResources(albumName, $scope.PageNumber, function(err, resources){
-                $scope.resources = resources;
+            albumProvider.getAlbumResources($scope.AlbumName, $scope.CurrentPage, function (err, resources) {
+                $scope.resources = resources.Resources;
+                $scope.Total = resources.Total;
             });
-        }
+
+        };
 
         //$scope.AlbumResources = function(page)
 
         $scope.getImage = function (resourceURL) {
-            $http.get('http://localhost:52885/api/Resources/'+resourceURL)
+            var getUrl = window.location;
+            var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+            $http.get(baseURL+ '/api/Resources/'+resourceURL)
             .success(function (data, status, headers, config) {
                 return data;
             })

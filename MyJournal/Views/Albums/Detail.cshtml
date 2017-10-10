@@ -58,11 +58,10 @@
 
                 <div style="clear: left"></div>
 
-                <div class="photo thumbnail" ng-repeat="resource in album.Resources | limitTo:20" style="width: 400px; float: left; margin-right: 10px">
+                <div class="photo thumbnail" ng-repeat="resource in resources" style="width: 48%; height: 350px; float: left; margin-right: 10px">
 
                     <a href="resource/{{resource.Md5}}">
-                        @*<img width="400px" data-ng-src="{{'data:image/png;base64,'+getImage(resource.Md5)}}" />*@
-                        <img width="400px" src="/api/Resources/{{resource.Md5}}" />
+                        <img style="height: 300px;" src="/api/Resources/{{resource.Md5}}" />
                         {{resource.OriginalFileName}}
                     </a>
                     <p> {{ photo.Description }} </p>
