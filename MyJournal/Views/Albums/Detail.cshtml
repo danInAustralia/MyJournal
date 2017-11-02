@@ -12,26 +12,12 @@
         </div>
     </h1>
     <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
-    <div class="contentbody">
-        <div class="wrapper lightsidecol">
-            <div id="maincol">
-                <p>something</p>
+
+            <div style="width:99%; background-color:white">
+                <p>{{album.Description}}</p>
+
                 <div>
                     <ul uib-pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></ul>
-                </div>
-                <div class="album panel panel-primary">
-                    <!--  <div class="album panel panel-primary" ng-repeat="album in albums | multifieldfilter:{ title: searchFor } "> -->
-                    @*<div>
-                            {{album | json}}
-                        </div>*@
-
-                    <div class="panel-heading">
-                        <h4>{{ album.Name }}</h4>
-                        <div class="title">{{ album.AlbumDate }}</div>
-                    </div>
-                    <div class="panel-body">
-                        {{ album.Description }}
-                    </div>
                 </div>
 
                 <div style="clear: left"></div>
@@ -58,13 +44,15 @@
 
                 <div style="clear: left"></div>
 
-                <div class="photo thumbnail" ng-repeat="resource in resources" style="width: 48%; height: 350px; float: left; margin-right: 10px">
+                <div class="photo thumbnail" ng-repeat="resource in resources" style="width: 20%; height: 150px; float: left; padding: 3px">
 
-                    <a href="resource/{{resource.Md5}}">
-                        <img style="height: 300px;" src="/api/Resources/{{resource.Md5}}" />
-                        {{resource.OriginalFileName}}
-                    </a>
-                    <p> {{ photo.Description }} </p>
+                    @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
+                        <img style="height:100%" src="/api/Resources/{{resource.Md5}}" ng-if="resource.OriginalFileName.toLowerCase().indexOf('.jpg')>=0"/>
+                        <video controls ng-if="resource.OriginalFileName.toLowerCase().indexOf('.avi')>=0">
+                            <source src="/api/Resources/{{resource.Md5}}" type="video/mp4">
+                        </video>
+                            
+                    @*<p> {{ photo.Description }} </p>*@
                 </div>
 
                 <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
@@ -78,6 +66,4 @@
 
             </div>
         </div>
-    </div>
-</div>
 
