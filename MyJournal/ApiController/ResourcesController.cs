@@ -3,6 +3,7 @@ using ResourceModel;
 using ResourceRepository;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -42,8 +43,20 @@ namespace MyJournal.ApiController
 
             //FileStream fileStream = FileProvider.Open(fileName);
             Stream stream = repository.GetResourceStream(id);
+            MemoryStream stream2 = new MemoryStream();
+            stream.CopyTo(stream2);
+            MediaTypeHeaderValue _mediaType = MediaTypeHeaderValue.Parse("application/octet-stream");
+            if (Request.Headers.Range != null)
+            {
+                // Return part of the video
+                HttpResponseMessage partialResponse = Request.CreateResponse(HttpStatusCode.PartialContent);
+                partialResponse.Content = new ByteRangeStreamContent(stream2, Request.Headers.Range, _mediaType);
+                return partialResponse;
+            }
+            //stream.Position = 0;
+            //stream2.Position = 0;
             HttpResponseMessage response = new HttpResponseMessage { Content = new StreamContent(stream) };
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
+            //response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
             response.Content.Headers.ContentLength = stream.Length;
             return response;
         }
