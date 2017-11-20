@@ -50,16 +50,15 @@
                     </video>
                 </div>
 
-                    <div class="photo thumbnail" ng-repeat="resource in resources" style="width: 20%; height: 150px; float: left; padding: 3px">
+                @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
+                    @*<div class="photo thumbnail" ng-repeat="resource in resources" style="width: 20%; height: 150px; float: left; padding: 3px">
 
-                        @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
                         <img style="height:100%" src="/api/Resources/{{resource.Md5}}" ng-if="resource.OriginalFileName.toLowerCase().indexOf('.jpg')>=0" />
                         <video style="height:100%" controls ng-if="resource.OriginalFileName.toLowerCase().indexOf('.mov')>=0">
                             <source src="/api/Resources/{{resource.Md5}}" type="video/mp4">
                         </video>
 
-                        @*<p> {{ photo.Description }} </p>*@
-                    </div>
+                    </div>*@
 
                     <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
                     <!--<ul uib-pagination total-items="Total" num-pages="5" items-per-page="$parent.filters.selections.CountPerPage" ng-model="$parent.filters.selections.PageNumber" max-size="5" class="pagination-sm" boundary-links="true" rotate="false"></ul>-->

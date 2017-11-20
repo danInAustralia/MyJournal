@@ -86,7 +86,43 @@ namespace MyJournal.ApiControllers
         }
 
         /// <summary>
+        /// Adds a resource to an album.
+        /// assertion that the resourceID and albumID exist
+        /// </summary>
+        /// <param name="albumID"></param>
+        [HttpPut]
+        public bool AddResource(string albumID, string resourceID)
+        {
+            //throw new Exception("forced error");
+            Repository.ResourceRepository rr = new Repository.ResourceRepository();
+            DigitalResource myResource = rr.Get(resourceID);
+            //DigitalResource resource = null;
+            if (myResource != null)
+            {
+                if (albumID != null)
+                {
+                    System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+                    Repository.ResourceRepository repository = new Repository.ResourceRepository();
+                    ReferenceRepository refRepository = new ReferenceRepository();
+                    UserRepository ur = new UserRepository();
+                    User user = ur.Get("piccoli.dan@gmail.com");
+                    Album album = repository.GetAlbums(x => x.Name == albumID).FirstOrDefault();
+                    album.AddResource(myResource);
+                    repository.SaveAlbum(album);
+
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Uploads a resource and adds it to an album
+        /// (to be deprecated because it does two things)
         /// </summary>
         /// <param name="albumID"></param>
         [HttpPut]
@@ -113,7 +149,7 @@ namespace MyJournal.ApiControllers
                     string name = file.FileName;
                     using (Stream fileStream = file.InputStream)
                     {
-                        myResource = repository.SaveFile(refRepository, user, fileStream, name);
+                        myResource = repository.SaveOrGet(refRepository, user, fileStream, name);
                         if (myResource != null)
                         {
                             album.AddResource(myResource);

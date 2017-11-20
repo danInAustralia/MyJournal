@@ -62,9 +62,14 @@ namespace Repository
                 using (session.BeginTransaction())
                 {
                         //session.CreateCriteria(typeof(DigitalResource)).ToList();
-                        resource = session.QueryOver<DigitalResource>()
-                                        .Where(x => x.Md5 == id)
-                                        .List().FirstOrDefault();
+                    resource = session.QueryOver<DigitalResource>()
+                                    .Where(x => x.Md5 == id)
+                                    .List().FirstOrDefault();
+
+                    
+                    IAmazonS3 s3Client = new AmazonS3Client();
+                    long size = s3Client.GetObjectMetadata("piccoli", id).ContentLength;
+                    resource.Size = size;
                 }
             }
 
@@ -130,7 +135,65 @@ namespace Repository
             SaveAlbum(album);
         }
 
+        public void ReadRemoteResourceToLocalFile(string resourceID, string targetFolder)
+        {
+            IAmazonS3 s3Client = new AmazonS3Client();
+            Stream ms = new MemoryStream();
+
+
+            using (GetObjectResponse response = s3Client.GetObject("piccoli", resourceID))
+            {
+                //string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), keyName);
+                if (!File.Exists(resourceID))
+                {
+                    response.WriteResponseStreamToFile(targetFolder + resourceID);
+                }
+            }
+        }
+
         public Stream GetResourceStream(string resourceID)
+        {
+            IAmazonS3 s3Client = new AmazonS3Client();
+            Stream ms = new MemoryStream();
+
+            using (TransferUtility tr = new TransferUtility(s3Client))
+            {
+                Stream amazonStream = tr.OpenStream("piccoli", resourceID);
+                ms = Amazon.S3.Util.AmazonS3Util.MakeStreamSeekable(amazonStream);
+            }
+
+            return ms;
+        }
+
+        //public Stream GetResourceStreamPartial(string resourceID, long start, long? end)
+        //{
+
+        //    MemoryStream memStram = new MemoryStream();
+        //    IAmazonS3 s3Client = new AmazonS3Client();
+        //    GetObjectRequest request = new GetObjectRequest
+        //    {
+        //        BucketName = "piccoli",
+        //        Key = resourceID
+        //    };
+
+        //    if(end != null)
+        //    {
+        //        request.ByteRange = new ByteRange(start, (long)end);
+        //    }
+
+        //    using (GetObjectResponse response = s3Client.GetObject(request))
+        //    {
+        //        //string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), keyName);
+        //        //if (!File.Exists(dest))
+        //        {
+        //            Stream returnStream = response.ResponseStream;
+        //            returnStream.CopyTo(memStram);
+        //        }
+        //    }
+        //    return memStram;
+        //}
+
+        public Stream GetResourceStream(string resourceID, long start, long end)
         {
             IAmazonS3 s3Client = new AmazonS3Client();
 
@@ -179,8 +242,9 @@ namespace Repository
         /// <param name="referenceRepository"></param>
         /// <param name="fileStream"></param>
         /// <param name="originalName"></param>
-        /// <returns></returns>
-        public ResourceModel.DigitalResource SaveFile(ReferenceRepository referenceRepository,
+        /// <returns>DigitalResource with the length of the file. The Digital Resource may
+        /// be newly created OR retrieved from the database if it already exists</returns>
+        public ResourceModel.DigitalResource SaveOrGet(ReferenceRepository referenceRepository,
             ResourceModel.User owner,
             Stream fileStream, 
             String originalName)
@@ -203,7 +267,8 @@ namespace Repository
                     {
                         Md5 = md5Sum,
                         OriginalFileName = originalName,
-                        Owner = owner
+                        Owner = owner,
+                        Size = fileStream.Length
                     };
 
                     if (ReferenceService.IsValidImage(fileStream))
@@ -230,7 +295,7 @@ namespace Repository
 
                     //upload the file
                     IAmazonS3 s3Client = new AmazonS3Client();
-                    ListBucketsResponse response = s3Client.ListBuckets();
+                    //ListBucketsResponse response = s3Client.ListBuckets();
 
                     using (TransferUtility tr = new TransferUtility(s3Client))
                     {
@@ -238,6 +303,11 @@ namespace Repository
                         //update the database
                         SaveResource(resource);
                     }
+                }
+                else
+                {
+
+                    return this.Get(md5Sum);
                 }
             }
             catch (AmazonS3Exception ex)

@@ -12,7 +12,7 @@ namespace Repository
 {
     public interface IResourceRepository
     {
-        ResourceModel.DigitalResource SaveFile(ReferenceRepository r, ResourceModel.User owner, Stream fileStream, String originalName);
+        ResourceModel.DigitalResource SaveOrGet(ReferenceRepository r, ResourceModel.User owner, Stream fileStream, String originalName);
 
         //int AddTagToResource(ResourceModel.Resource resource, Tag tag);
 

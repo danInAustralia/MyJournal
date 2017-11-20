@@ -16,6 +16,7 @@ namespace ResourceModel
         public virtual String Description { get; set; }
         public virtual DateTime? Date { get; set; }
         public virtual User Owner { get; set; }
+        public virtual long Size { get; set; }
 
         public virtual void AddTag(Tag tag)
         {

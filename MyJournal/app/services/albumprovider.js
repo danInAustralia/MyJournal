@@ -7,14 +7,9 @@ angular.module('Journal.AlbumProvider', [])
             var uploader = new FileUploader({
                 scope: scope,
                 method: "PUT",
-                url: "/api/albums/Upload?albumID=" + album_name
+                url: "/api/resources/Upload"
             });
             return uploader;
-            //return $fileUploader.create({
-            //    scope: scope,
-            //    method: "PUT",
-            //    url: "/api/albums/Upload?albumID=" + album_name
-            //});
         };
 
         this.getAlbums = function (callback) {

@@ -65,37 +65,51 @@
             }];
         };
 
-        $scope.uploader.onSuccessItem = function(item, response, status, headers) {
-            //---verify MD5 of items
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                var text = (reader.result);
+        $scope.uploader.onSuccessItem = function (item, response, status, headers) {
+            //if the file is not too large, verify the MD5 sum
+            if (item.file.size < 5000000) {
+                //---verify MD5 of items
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    var text = (reader.result);
 
-                var binary = "";
-                var bytes = new Uint8Array(text);
-                var length = bytes.byteLength;
-                for (var i = 0; i < length; i++) {
-                    binary += String.fromCharCode(bytes[i]);
+                    var binary = "";
+                    var bytes = new Uint8Array(text);
+                    var length = bytes.byteLength;
+                    for (var i = 0; i < length; i++) {
+                        binary += String.fromCharCode(bytes[i]);
+                    }
+
+                    var hash = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binary));
+                    var hashStr = hash.toString();
+                    if (hashStr === response.Md5) {
+                        item.uploadStatus = 'Success';
+                        $scope.uploadStatus[item.file.name] = 'Success';
+                        $scope.$apply();
+                        //$scope.uploader.removeFromQueue(item);
+                    }
+                    else {
+                        item.uploadStatus = 'Md5 mismatch';
+                        $scope.uploadStatus[item.file.name] = 'Md5 mismatch';
+                    }
                 }
-
-                var hash = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binary));
-                var hashStr = hash.toString();
-                if(hashStr === response.Md5)
+                reader.readAsArrayBuffer(item._file);
+                //---
+            }
+            //file too large to calculate Md5 client side, compare file sizes instead
+            else {
+                if(response.Size == item.file.size)
                 {
                     item.uploadStatus = 'Success';
                     $scope.uploadStatus[item.file.name] = 'Success';
-                    $scope.$apply();
-                    //$scope.uploader.removeFromQueue(item);
                 }
                 else
                 {
-                    item.uploadStatus = 'Md5 mismatch';
-                    $scope.uploadStatus[item.file.name] = 'Md5 mismatch';
+                    item.uploadStatus = 'File size mismatch';
+                    $scope.uploadStatus[item.file.name] = 'File size mismatch';
                 }
+                $scope.$apply();
             }
-            reader.readAsArrayBuffer(item._file);
-            //---
-
         };
 
         $scope.uploader.onErrorItem = function (item, response, status, headers) {
