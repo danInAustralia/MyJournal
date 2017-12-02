@@ -26,6 +26,10 @@ namespace MyJournal
                 .Include("~/Scripts/angular-ui.js")
                 );
 
+            bundles.Add(new ScriptBundle("~/bundles/fileSaver")
+                .Include("~/Scripts/fileSaver.js")
+                );
+
             bundles.Add(new ScriptBundle("~/bundles/md5")
                 .Include("~/Scripts/md5.js")
                 );

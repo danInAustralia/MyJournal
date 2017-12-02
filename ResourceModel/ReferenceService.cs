@@ -30,16 +30,20 @@ namespace ResourceModel
         private static Regex r = new Regex(":");
 
         //retrieves the datetime WITHOUT loading the whole image
-        public static DateTime GetDateTakenFromImage(Stream stream)
+        public static DateTime? GetDateTakenFromImage(Stream stream)
         {
-
+            DateTime? dateTaken = null;
             using (Image myImage = Image.FromStream(stream, false, false))
             {
                 try
                 {
-                    PropertyItem propItem = myImage.GetPropertyItem(36867);
-                    string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                    return DateTime.Parse(dateTaken);
+                    if (myImage.PropertyIdList.Contains(36867))
+                    {
+                        PropertyItem propItem = myImage.GetPropertyItem(36867);
+                        string dateTakenStr = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                        dateTaken = DateTime.Parse(dateTakenStr);
+                    }
+                    return dateTaken;
                 }
                 catch
                 {

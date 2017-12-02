@@ -90,7 +90,7 @@ namespace MyJournal.ApiControllers
         /// assertion that the resourceID and albumID exist
         /// </summary>
         /// <param name="albumID"></param>
-        [HttpPut]
+        [HttpPost]
         public bool AddResource(string albumID, string resourceID)
         {
             //throw new Exception("forced error");

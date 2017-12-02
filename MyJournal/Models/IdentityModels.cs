@@ -21,7 +21,7 @@ namespace MyJournal.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ResourcesDatabase", throwIfV1Schema: false)
         {
         }
 

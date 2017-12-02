@@ -41,6 +41,7 @@ namespace MyJournal.ApiController
         {
 
             Repository.ResourceRepository repository = new Repository.ResourceRepository();
+            DigitalResource resource = repository.Get(id);
             //string fileName = string.Format("{0}.jpg", id);
             //if (!FileProvider.Exists(fileName))
             //    throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -66,7 +67,17 @@ namespace MyJournal.ApiController
                 try
                 {
                     //if the file has not, download it locally.
-                    MediaTypeHeaderValue _mediaType = MediaTypeHeaderValue.Parse("video/mp4");
+                    string ext = String.Empty;
+                    //if (resource.OriginalFileName.Contains("."))
+                    //{
+                    //    ext = resource.OriginalFileName.Substring(resource.OriginalFileName.IndexOf(".") + 1);
+                    //}
+                    if(String.IsNullOrEmpty(ext))
+                    {
+                        ext = "application/octet-stream";
+                    }
+                    string mimeType = MimeTypeHelper.GetMimeType(ext);
+                    MediaTypeHeaderValue _mediaType = MediaTypeHeaderValue.Parse(mimeType);
                     RangeHeaderValue ranges = Request.Headers.Range;
                     RangeItemHeaderValue relevantRange = ranges.Ranges.First();
                     long? start = relevantRange.From;

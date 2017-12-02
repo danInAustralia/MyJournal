@@ -11,10 +11,24 @@
             <div class="arrow"></div>
         </div>
     </h1>
-    <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
 
             <div style="width:99%; background-color:white">
     <p>{{album.Description}}</p>
+    <md-autocomplete ng-disabled="false"
+                        md-no-cache="true"
+                        md-selected-item="selectedOption"
+                        md-search-text="searchText"
+                        md-items="item in options"
+                        md-item-text="item.Key"
+                        md-min-length="0"
+                        placeholder="Search query?">
+        <md-item-template>
+            <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Value}}</span>
+        </md-item-template>
+        <md-not-found>
+            No matches for "{{searchText}}" were found.
+        </md-not-found>
+    </md-autocomplete>
 
     <div>
         <ul uib-pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></ul>
@@ -26,40 +40,25 @@
         <button type="button" class="btn btn-success">Add files to this album</button>
     </a>
 
-    <md-autocomplete ng-disabled="false"
-                     md-no-cache="true"
-                     md-selected-item="selectedOption"
-                     md-search-text="searchText"
-                     md-items="item in options"
-                     md-item-text="item.Key"
-                     md-min-length="0"
-                     placeholder="Search query?">
-        <md-item-template>
-            <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.Value}}</span>
-        </md-item-template>
-        <md-not-found>
-            No matches for "{{searchText}}" were found.
-        </md-not-found>
-    </md-autocomplete>
-
     <div style="clear: left"></div>
 
-                <div class="photo thumbnail" style="width: 20%; height: 150px; float: left; padding: 3px">
+                @*<div class="photo thumbnail" style="width: 20%; height: 150px; float: left; padding: 3px">
                     <video style="height:100%" controls>
                         <source src="/api/Resources/2741cbfff1efd44ec5ea77684cc6c893" type="video/mp4">
                     </video>
-                </div>
+                </div>*@
 
                 @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
-                    @*<div class="photo thumbnail" ng-repeat="resource in resources" style="width: 20%; height: 150px; float: left; padding: 3px">
+                <div ng-repeat="resource in resources"  style="width: 20%; height: 150px; float: left; padding: 3px">
+                    <div class="photo thumbnail">
 
                         <img style="height:100%" src="/api/Resources/{{resource.Md5}}" ng-if="resource.OriginalFileName.toLowerCase().indexOf('.jpg')>=0" />
                         <video style="height:100%" controls ng-if="resource.OriginalFileName.toLowerCase().indexOf('.mov')>=0">
                             <source src="/api/Resources/{{resource.Md5}}" type="video/mp4">
                         </video>
-
-                    </div>*@
-
+                    </div>
+                    <button class="btn btn-success" ng-click="downloadResource(resource.Md5, resource.OriginalFileName)">Download</button>
+                </div>
                     <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>
                     <!--<ul uib-pagination total-items="Total" num-pages="5" items-per-page="$parent.filters.selections.CountPerPage" ng-model="$parent.filters.selections.PageNumber" max-size="5" class="pagination-sm" boundary-links="true" rotate="false"></ul>-->
                     <p ng-if="($parent.filters.selections.PageNumber)*($parent.filters.selections.CountPerPage)<=Total">Showing {{($parent.filters.selections.PageNumber - 1)*$parent.filters.selections.CountPerPage + 1}} - {{($parent.filters.selections.PageNumber)*($parent.filters.selections.CountPerPage)}} of {{Total}}</p>

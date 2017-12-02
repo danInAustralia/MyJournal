@@ -23,6 +23,20 @@ angular.module('Journal.AlbumProvider', [])
                 });
         };
 
+        this.addToAlbum = function(albumID, resourceID, callback)
+        {
+            $http({
+                url: '/api/albums/AddResource',
+                method: 'POST',
+                params: { albumID: albumID, resourceID: resourceID }
+            }).then(function (response) {
+                callback(true);
+            },
+            function (response) {
+                callback(false);
+            });
+        }
+
         this.addAlbum = function (album_data, callback) {
 
             if (!album_data.Name) return callback({code: "missing_title"});
