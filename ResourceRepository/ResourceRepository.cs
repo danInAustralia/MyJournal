@@ -51,6 +51,26 @@ namespace Repository
             return list;
         }
 
+        public Album GetAlbum(string id)
+        {
+            var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                using (session.BeginTransaction())
+                {
+                    var album = session.QueryOver<Album>()
+                        .Fetch(u => u.Resources)
+                        .Eager
+                        .List()
+                        .Where(u => u.Name == id)
+                        .FirstOrDefault();
+
+                    return album;
+                }
+            }
+        }
+
         public DigitalResource Get(string id)
         {
             DigitalResource resource;// list = new List<Resource>();

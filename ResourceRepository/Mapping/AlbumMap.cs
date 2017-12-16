@@ -19,8 +19,8 @@ namespace Repository.Mapping
             HasManyToMany<DigitalResource>(x => x.Resources).Table("Album_X_Resource")
                 .ParentKeyColumn("AlbumID")
                 .ChildKeyColumn("ResourceID")
-                .OrderBy("Date")
-                .Not.LazyLoad();
+                .OrderBy("Date");
+                //.Not.LazyLoad();
         }
     }
 }

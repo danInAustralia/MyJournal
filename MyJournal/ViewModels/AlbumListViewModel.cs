@@ -9,7 +9,7 @@ namespace MyJournal.ViewModels
     public class AlbumListViewModel
     {
 
-        public List<Album> Albums { get; set; }
+        public List<AlbumViewModel> Albums { get; set; }
 
         public Album NewAlbum { get; set; }
     }

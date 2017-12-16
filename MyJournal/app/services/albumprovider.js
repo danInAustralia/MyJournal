@@ -40,7 +40,7 @@ angular.module('Journal.AlbumProvider', [])
         this.addAlbum = function (album_data, callback) {
 
             if (!album_data.Name) return callback({code: "missing_title"});
-            if (!album_data.Description) return callback({code:"missing_description"});
+            //if (!album_data.Description) return callback({code:"missing_description"});
             if (!album_data.AlbumDate) return callback({ code: "bad_date" });
 
             //var d = new Date(album_data.date.trim());

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ResourceModel;
 
 namespace MyJournal.Factories
 {
@@ -14,7 +15,7 @@ namespace MyJournal.Factories
         {
             AlbumListViewModel vm = new AlbumListViewModel
             {
-                Albums = repository.GetAlbums(null),
+                Albums = MapAlbumsToVM(repository.GetAlbums(null)),
                 NewAlbum = new ResourceModel.Album
                 {
                     Name = "New Album",
@@ -24,6 +25,32 @@ namespace MyJournal.Factories
                 }
             };
             return vm;
+        }
+
+        /// <summary>
+        /// Convert list of Albums to album viewmodels. Better to use AutoMapper for this
+        /// but I'm too lazy
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        private List<AlbumViewModel> MapAlbumsToVM(List<Album> list)
+        {
+            List<AlbumViewModel> albumVMs = new List<AlbumViewModel>();
+
+            foreach(Album album in list)
+            {
+                AlbumViewModel avm = new AlbumViewModel
+                {
+                    ID = album.ID,
+                    Name = album.Name,
+                    Description = album.Description,
+                    AlbumDate = album.AlbumDate,
+                    Owner = album.Owner
+                };
+                albumVMs.Add(avm);
+            }
+
+            return albumVMs;
         }
     }
 }

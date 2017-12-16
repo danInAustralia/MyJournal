@@ -48,9 +48,9 @@ namespace MyJournal.ApiControllers
 
             try
             {
-                List<Album> albums = repository.GetAlbums(a => a.Name == id);
+                Album album = repository.GetAlbum(id);
 
-                return albums.FirstOrDefault();
+                return album;
             }
             catch
             {
@@ -64,7 +64,7 @@ namespace MyJournal.ApiControllers
             IResourceRepository repository = new Repository.ResourceRepository();
             try
             {
-                Album album = repository.GetAlbums(a => a.Name == AlbumID).First();
+                Album album = repository.GetAlbum(AlbumID);
 
                 ResourceListViewModel resourceVM = new ResourceListViewModel
                 {
