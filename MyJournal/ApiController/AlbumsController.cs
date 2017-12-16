@@ -106,7 +106,7 @@ namespace MyJournal.ApiControllers
                     ReferenceRepository refRepository = new ReferenceRepository();
                     UserRepository ur = new UserRepository();
                     User user = ur.Get("piccoli.dan@gmail.com");
-                    Album album = repository.GetAlbums(x => x.Name == albumID).FirstOrDefault();
+                    Album album = repository.GetAlbum(albumID);
                     album.AddResource(myResource);
                     repository.SaveAlbum(album);
 
