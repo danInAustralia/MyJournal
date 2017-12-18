@@ -1,4 +1,6 @@
-﻿using Repository;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using Repository;
 using ResourceModel;
 using ResourceRepository;
 using System;
@@ -42,70 +44,67 @@ namespace MyJournal.ApiController
 
             Repository.ResourceRepository repository = new Repository.ResourceRepository();
             DigitalResource resource = repository.Get(id);
-            //string fileName = string.Format("{0}.jpg", id);
-            //if (!FileProvider.Exists(fileName))
-            //    throw new HttpResponseException(HttpStatusCode.NotFound);
-
-            //iif the local cache file exists, open it.
-
-            string targetFolder = HttpContext.Current.Server.MapPath("~/cache/");
-            FileStream cacheFile = null;
-            if(File.Exists(targetFolder+id))
-            {
-                cacheFile = File.OpenRead(targetFolder+id);
-            }
-            else//otherwise get it from S3
-            {
-                repository.ReadRemoteResourceToLocalFile(id, targetFolder);
-                cacheFile = File.OpenRead(targetFolder+id);
-            }
-
             //await stream.CopyToAsync(stream2,);
+            // Create a client
+            AmazonS3Client client = new AmazonS3Client();
 
+            GetObjectRequest request = null;
             if (Request.Headers.Range != null)
             {
-                try
-                {
-                    //if the file has not, download it locally.
-                    string ext = String.Empty;
-                    //if (resource.OriginalFileName.Contains("."))
-                    //{
-                    //    ext = resource.OriginalFileName.Substring(resource.OriginalFileName.IndexOf(".") + 1);
-                    //}
-                    if(String.IsNullOrEmpty(ext))
-                    {
-                        ext = "application/octet-stream";
-                    }
-                    string mimeType = MimeTypeHelper.GetMimeType(ext);
-                    MediaTypeHeaderValue _mediaType = MediaTypeHeaderValue.Parse(mimeType);
-                    RangeHeaderValue ranges = Request.Headers.Range;
-                    RangeItemHeaderValue relevantRange = ranges.Ranges.First();
-                    long? start = relevantRange.From;
-                    long? end = relevantRange.To;
-                    //stream.Position = 0;
-                    // Return part of the video
-                    HttpResponseMessage partialResponse = Request.CreateResponse(HttpStatusCode.PartialContent);
-                    partialResponse.Headers.AcceptRanges.Add("bytes");
-                    partialResponse.Content = new ByteRangeStreamContent(cacheFile, Request.Headers.Range, _mediaType);
 
-                    //partialResponse.Content.Headers.ContentLength = end - start + 1;
-                    //partialResponse.Content.Headers.ContentRange = contentRange;
-                    return partialResponse;
-                }
-                catch (InvalidByteRangeException invalidByteRangeException)
+                if (Request.Headers.Range.Ranges.First().To == null)
                 {
-                    return Request.CreateErrorResponse(invalidByteRangeException);
+                    // Create a GetObject request
+                    request = new GetObjectRequest
+                    {
+                        BucketName = "piccoli",
+                        Key = id
+                    };
+                }
+                else
+                {
+                    request = new GetObjectRequest
+                    {
+                        BucketName = "piccoli",
+                        Key = id,
+                        ByteRange = new ByteRange((long)Request.Headers.Range.Ranges.First().From,
+                            Request.Headers.Range.Ranges.First().To == null ? 0 : (long)Request.Headers.Range.Ranges.First().To)
+                    };
                 }
             }
             else
             {
-                //stream.Position = 0;
-                //stream2.Position = 0;
-                HttpResponseMessage response = new HttpResponseMessage { Content = new StreamContent(cacheFile) };
-                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
-                response.Content.Headers.ContentLength = cacheFile.Length;
-                return response;
+                request = new GetObjectRequest
+                {
+                    BucketName = "piccoli",
+                    Key = id
+                };
             }
+                    // Issue request and remember to dispose of the response
+                    //using 
+            GetObjectResponse response = client.GetObject(request);
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new StreamContent(response.ResponseStream);
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+            return result;
+
+        }
+
+        private static MediaTypeHeaderValue GetMediaType(DigitalResource resource)
+        {
+            String ext = String.Empty;
+            if (resource.OriginalFileName.Contains("."))
+            {
+                ext = resource.OriginalFileName.Substring(resource.OriginalFileName.IndexOf(".") + 1);
+            }
+            if (String.IsNullOrEmpty(ext))
+            {
+                ext = "application/octet-stream";
+            }
+            string mimeType = MimeTypeHelper.GetMimeType(ext);
+            MediaTypeHeaderValue _mediaType = MediaTypeHeaderValue.Parse(mimeType);
+            return _mediaType;
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace MyJournal.ApiController
             TagRepository tagRepository = new TagRepository();
 
             DigitalResource resource = repository.Get(resourceID);
-            Tag tagToAdd = tagRepository.GetOrAdd(tag);
+            ResourceModel.Tag tagToAdd = tagRepository.GetOrAdd(tag);
 
             resource.AddTag(tagToAdd);
         }
