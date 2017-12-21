@@ -17,6 +17,13 @@ namespace MyJournal
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            //allow arbitrary functions in controller to be called (use minimally)
+            config.Routes.MapHttpRoute(
+                name: "ApiWithAction",
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { action = "get", id = RouteParameter.Optional }
+            );
+
             var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
             

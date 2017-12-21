@@ -52,10 +52,11 @@
                 <div ng-repeat="resource in resources"  style="width: 20%; height: 150px; float: left; padding: 3px">
                     <div class="photo thumbnail">
 
-                        <img style="height:100%" src="/api/Resources/{{resource.Md5}}" ng-if="resource.OriginalFileName.toLowerCase().indexOf('.jpg')>=0" />
-                        <video style="height:100%" controls ng-if="resource.OriginalFileName.toLowerCase().indexOf('.mov')>=0">
+                        <img style="height:100%" src="/api/Resources/GetThumbnailRepresentation/{{resource.Md5}}" />
+                        <!--instead of showing the video here, an image still will be shown, with ability for user to click and start playback-->
+                        @*<video style="height:100%" controls ng-if="resource.OriginalFileName.toLowerCase().indexOf('.mov')>=0">
                             <source src="/api/Resources/{{resource.Md5}}" type="video/mp4">
-                        </video>
+                        </video>*@
                     </div>
                     <button class="btn btn-success" ng-click="downloadResource(resource.Md5, resource.OriginalFileName)">Download</button>
                 </div>
