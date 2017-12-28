@@ -4,7 +4,7 @@
 }
 
 
-<div ng-controller="AlbumViewController" ng-init="init('@Model')">
+<div ng-controller="AlbumViewController" ng-init="init('@Model.Replace("'","&#39;")')">
     <h1>
         <div class="wrapper">
             {{album.Name}}
@@ -49,7 +49,7 @@
                 </div>*@
 
                 @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
-                <div ng-repeat="resource in resources"  style="width: 20%; height: 150px; float: left; padding: 3px">
+                <div ng-repeat="resource in resources"  style="width: 20%; height: 200px; float: left; padding: 3px">
                     <div class="photo thumbnail">
 
                         <img style="height:100%" src="/api/Resources/GetThumbnailRepresentation/{{resource.Md5}}" />
@@ -58,6 +58,7 @@
                             <source src="/api/Resources/{{resource.Md5}}" type="video/mp4">
                         </video>*@
                     </div>
+                    <div dx-tag-box="tagOptions"></div>
                     <button class="btn btn-success" ng-click="downloadResource(resource.Md5, resource.OriginalFileName)">Download</button>
                 </div>
                     <pagination total-items="Total" ng-model="CurrentPage" items-per-page="itemsPerPage" ng-change="pageChanged()"></pagination>

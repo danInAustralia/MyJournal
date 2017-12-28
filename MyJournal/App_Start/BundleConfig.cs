@@ -9,7 +9,7 @@ namespace MyJournal
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-1.10.2.js"));
+                        "~/Scripts/jquery-2.2.3.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -28,6 +28,10 @@ namespace MyJournal
 
             bundles.Add(new ScriptBundle("~/bundles/fileSaver")
                 .Include("~/Scripts/fileSaver.js")
+                );
+
+            bundles.Add(new ScriptBundle("~/bundles/devExpress")
+                .Include("~/Scripts/dx.web.js")
                 );
 
             bundles.Add(new ScriptBundle("~/bundles/md5")
@@ -49,7 +53,10 @@ namespace MyJournal
                       "~/Content/bootstrap.css",
                       "~/Content/angular-ui.css",
                       "~/Content/ui-bootstrap-csp.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/dx.common.css",
+                      "~/Content/dx.spa.css",
+                      "~/Content/dx.light.css"));
         }
     }
 }

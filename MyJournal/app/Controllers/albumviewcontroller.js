@@ -14,6 +14,20 @@
                 { Key: "3", Value: "Three" },
             ]
 
+            $scope.simpleProducts = [
+                "HD Video Player",
+                ];
+            $scope.tagOptions = {
+                acceptCustomValue: true,
+                bindingOptions: {
+                    items: "simpleProducts"
+                },
+                onCustomItemCreating: function (args) {
+                    var newValue = args.text;
+                    $scope.simpleProducts.unshift(newValue);
+                    return newValue;
+                }
+            };
         //$scope.album_name = $routeParams.album_name;
         $scope.page_load_error = "";
 
