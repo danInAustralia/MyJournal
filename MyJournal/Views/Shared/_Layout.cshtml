@@ -7,7 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Jura:500,600' rel='stylesheet' type='text/css'>
 
     @Styles.Render("~/Content/css")
-    <link rel="dx-theme" data-theme="generic.light" href="css/dx.light.css" data-active="true" />
+    <link rel="dx-theme" data-theme="generic.light" href="~/css/dx.light.css" data-active="true" />
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/jquery")
@@ -28,28 +28,32 @@
     </script>
 </head>
 <body>
-    <header>
-        <div class="wrapper">
-            <nav>
-                <ul class="sf-menu sf-js-enabled">
-                    <li>@Html.ActionLink("My Journal", "Index", "Home")</li>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("My Journal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Your Albums", "Index", "Albums")</li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     @Html.Partial("_LoginPartial")
                 </ul>
-            </nav>
-            <div id="logo">
-                <a href="http://abc.net.au/">My Journal Logo</a>
+                @Html.Partial("_LoginPartial")
             </div>
-            <div class="enquire_btn">@Html.ActionLink("Contact", "Contact", "Home")</div>
         </div>
-    </header>
-    <div class="sitecontainer body-content">
+    </div>
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My Journal</p>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 

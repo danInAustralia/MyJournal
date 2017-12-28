@@ -64,6 +64,7 @@ namespace MyJournal.ApiControllers
             IResourceRepository repository = new Repository.ResourceRepository();
             try
             {
+                AlbumID = AlbumID.Replace("%27", "'");
                 Album album = repository.GetAlbum(AlbumID);
 
                 ResourceListViewModel resourceVM = new ResourceListViewModel

@@ -4,7 +4,7 @@
 }
 
 
-<div ng-controller="AlbumViewController" ng-init="init('@Model.Replace("'","&#39;")')">
+<div ng-controller="AlbumViewController" ng-init="init('@Model.Replace("'","%27")')">
     <h1>
         <div class="wrapper">
             {{album.Name}}
