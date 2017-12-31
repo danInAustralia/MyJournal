@@ -9,13 +9,13 @@ namespace MyJournal.Controllers
     public class AlbumsController : Controller
     {
         // GET: Album
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
                 return base.View();
         }
 
-        //[Authorize]
+        [Authorize]
         public ViewResult Detail(string albumName)
         {
             return View((object)albumName);

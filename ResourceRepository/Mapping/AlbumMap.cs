@@ -16,6 +16,7 @@ namespace Repository.Mapping
             Id(x => x.ID).Column("AlbumID").GeneratedBy.Identity();
             Map(x => x.Name).Column("Name");
             Map(x => x.Description).Column("Description");
+            //Map(x => x.Owner).Column("")
             HasManyToMany<DigitalResource>(x => x.Resources).Table("Album_X_Resource")
                 .ParentKeyColumn("AlbumID")
                 .ChildKeyColumn("ResourceID")

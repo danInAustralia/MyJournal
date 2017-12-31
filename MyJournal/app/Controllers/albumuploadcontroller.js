@@ -5,6 +5,10 @@
     $scope.done_uploading = false;
 
     $scope.init = function (albumName) {
+        if (albumName)
+        {
+            albumName = albumName.replace("%27", "'");
+        }
         $scope.album_name = albumName;
 
         $scope.uploader = albumProvider.getUploader($scope.album_name, $scope);

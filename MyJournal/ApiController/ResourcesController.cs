@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace MyJournal.ApiController
 {
@@ -249,7 +250,8 @@ namespace MyJournal.ApiController
                 Repository.ResourceRepository repository = new Repository.ResourceRepository();
                 ReferenceRepository refRepository = new ReferenceRepository();
                 UserRepository ur = new UserRepository();
-                User user = ur.Get("piccoli.dan@gmail.com");
+                string currentUser = User.Identity.Name;
+                User user = ur.Get(currentUser);
                 //Album album = repository.GetAlbums(x => x.Name == albumID).FirstOrDefault();
 
                 //for (int i = 0; i < files.Count; i++)

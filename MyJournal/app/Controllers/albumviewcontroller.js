@@ -32,6 +32,10 @@
         $scope.page_load_error = "";
 
         $scope.init = function (albumName) {
+            if (albumName)
+            {
+                albumName = albumName.replace("%27", "'");
+            }
             $scope.AlbumName = albumName;
             albumProvider.getAlbumByName(albumName, function (err, album) {
                 if (err) {

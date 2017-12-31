@@ -3,7 +3,7 @@
     ViewBag.Title = "Upload Resources";
 }
 
-<div ng-controller="AlbumUploadController" ng-init="init('@Model')">
+<div ng-controller="AlbumUploadController" ng-init="init('@Model.Replace("'","%27")')">
     <h1>
         <div class="wrapper">
             Upload to {{album_name}}

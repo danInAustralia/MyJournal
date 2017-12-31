@@ -23,6 +23,8 @@ namespace MyJournal.ApiControllers
         /// URL translates to http://localhost:[port]/api/albums [52885]
         /// </summary>
         /// <returns>JSON of ViewModel of the list of albums retrieved from a repository</returns>
+        /// 
+        [Authorize]
         public AlbumListViewModel GetAllAlbums()
         {
             AlbumListViewModelFactory albumListFactory = new AlbumListViewModelFactory();
@@ -42,6 +44,7 @@ namespace MyJournal.ApiControllers
      
         }
 
+        [Authorize]
         public Album GetAlbum(string id)
         {
             IResourceRepository repository = new Repository.ResourceRepository();
@@ -58,6 +61,7 @@ namespace MyJournal.ApiControllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public ResourceListViewModel AlbumResources(string AlbumID, int PageNumber)
         {
@@ -126,6 +130,7 @@ namespace MyJournal.ApiControllers
         /// (to be deprecated because it does two things)
         /// </summary>
         /// <param name="albumID"></param>
+        [Authorize]
         [HttpPut]
         public IHttpActionResult Upload(string albumID)
         {
