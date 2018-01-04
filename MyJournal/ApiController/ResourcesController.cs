@@ -15,7 +15,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
 
 namespace MyJournal.ApiController
 {
@@ -147,6 +146,18 @@ namespace MyJournal.ApiController
                 result.Content.Headers.ContentType =
                     new MediaTypeHeaderValue("application/octet-stream");
             }
+            //else if (mimeType.Contains("video"))
+            //{
+            //    VideoFileReader reader = new VideoFileReader();
+            //    reader.
+            //    Bitmap bmp = reader.ReadVideoFrame();
+            //    MemoryStream memoryStream = new MemoryStream();
+            //    bmp.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //    memoryStream.Position = 0;
+            //    result.Content = new StreamContent(memoryStream);
+            //    result.Content.Headers.ContentType =
+            //        new MediaTypeHeaderValue("application/octet-stream");
+            //}
             else
             {
                 //create an image as a placeholder for the resource.
