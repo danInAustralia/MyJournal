@@ -32,6 +32,7 @@
         $scope.page_load_error = "";
 
         $scope.init = function (albumName) {
+            $scope.visiblePopup = false;
             if (albumName)
             {
                 albumName = albumName.replace("%27", "'");
@@ -63,6 +64,35 @@
             });
 
         };
+
+        $scope.popupOptions = {
+            width: 1100,
+            height: 800,
+            showTitle: true,
+            title: "Information",
+            dragEnabled: false,
+            closeOnOutsideClick: true,
+            bindingOptions: {
+                visible: "visiblePopup",
+            }
+        };
+
+        $scope.GetSelectedResource = function()
+        {
+            return $scope.selectedResource.Md5;
+        }
+
+        $scope.IsSelectedResourceAVideo = function()
+        {
+            var isVideo = $scope.selectedResource.OriginalFileName.toLowerCase().indexOf('.mov') >= 0;
+            return isVideo;
+        }
+
+        $scope.showResourcePopup = function(resource)
+        {
+            $scope.selectedResource = resource;
+            $scope.visiblePopup = true;
+        }
 
             //$scope.AlbumResources = function(page)
         $scope.downloadResource = function(md5, originalFileName){

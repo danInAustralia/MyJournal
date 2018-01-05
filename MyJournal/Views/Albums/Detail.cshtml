@@ -49,7 +49,7 @@
         </div>*@
 
         @*<a href="resource/{{resource.Md5}}">{{resource.OriginalFileName}}</a>*@
-        <div ng-repeat="resource in resources"  style="width: 20%; height: 200px; float: left; padding: 3px">
+        <div ng-repeat="resource in resources"  style="width: 20%; height: 200px; float: left; padding: 3px" ng-click="showResourcePopup(resource)">
             <div class="photo thumbnail">
 
                 <img style="height:100%" src="/api/Resources/GetThumbnailRepresentation/{{resource.Md5}}" />
@@ -79,6 +79,10 @@
     <div class="popup"
          dx-popup="popupOptions">
         <p>Test popup</p>
-    </div>
+        <img style="height:95%" ng-src="/api/Resources/Get/{{GetSelectedResource()}}" ng-if="!IsSelectedResourceAVideo()" />
+        <video style="height:95%" controls ng-if="IsSelectedResourceAVideo()">
+            <source ng-src="/api/Resources/Get/{{GetSelectedResource()}}" type="video/mp4">
+        </video>
+</div>
 </div>
 
