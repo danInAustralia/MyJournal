@@ -98,6 +98,7 @@ namespace MyJournal.ApiControllers
         [HttpPost]
         public bool AddResource(string albumID, string resourceID)
         {
+            bool success = false;
             //throw new Exception("forced error");
             Repository.ResourceRepository rr = new Repository.ResourceRepository();
             DigitalResource myResource = rr.Get(resourceID);
@@ -119,7 +120,8 @@ namespace MyJournal.ApiControllers
             }
             else
             {
-                return false;
+                success = false;
+                throw new System.Exception("No album specified");
             }
 
             return true;

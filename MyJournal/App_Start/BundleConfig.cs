@@ -53,7 +53,7 @@ namespace MyJournal
                       "~/Content/bootstrap.css",
                       "~/Content/angular-ui.css",
                       "~/Content/ui-bootstrap-csp.css",
-                      //"~/Content/site.css",
+                      "~/Content/site.css",
                       "~/Content/dx.common.css",
                       "~/Content/dx.spa.css",
                       "~/Content/dx.light.css"));
