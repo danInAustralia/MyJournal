@@ -11,11 +11,11 @@ namespace MyJournal.Factories
     public class AlbumListViewModelFactory
     {
 
-        public AlbumListViewModel GetAlbumListViewModel(IResourceRepository repository)
+        public AlbumListViewModel GetAlbumListViewModel(IResourceRepository repository, String userName)
         {
             AlbumListViewModel vm = new AlbumListViewModel
             {
-                Albums = MapAlbumsToVM(repository.GetAlbums(null)),
+                Albums = MapAlbumsToVM(repository.GetAlbums(x => x.Owner.UserName == userName)),
                 NewAlbum = new ResourceModel.Album
                 {
                     Name = "New Album",

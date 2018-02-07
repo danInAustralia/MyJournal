@@ -21,6 +21,6 @@ namespace Repository
         void AddAlbum(Album album);
 
         List<Album> GetAlbums(Func<Album, bool> predicate);
-        Album GetAlbum(string id);
+        Album GetAlbum(string id, string userName);
     }
 }

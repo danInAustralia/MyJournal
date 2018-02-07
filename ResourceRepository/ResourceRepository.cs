@@ -51,7 +51,15 @@ namespace Repository
             return list;
         }
 
-        public Album GetAlbum(string id)
+
+        /// <summary>
+        /// Gets an album with a name from a particular owner. Album names
+        /// are unique for each owner.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ownerName"></param>
+        /// <returns></returns>
+        public Album GetAlbum(string id, string ownerName)
         {
             var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
 
@@ -63,7 +71,7 @@ namespace Repository
                         .Fetch(u => u.Resources)
                         .Eager
                         .List()
-                        .Where(u => u.Name == id)
+                        .Where(u => u.Name == id && u.Owner.UserName == ownerName)
                         .FirstOrDefault();
 
                     return album;

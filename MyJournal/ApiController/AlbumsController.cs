@@ -27,9 +27,10 @@ namespace MyJournal.ApiControllers
         [Authorize]
         public AlbumListViewModel GetAllAlbums()
         {
+            string userName = this.User.Identity.Name;
             AlbumListViewModelFactory albumListFactory = new AlbumListViewModelFactory();
             IResourceRepository repository = new Repository.ResourceRepository();
-            AlbumListViewModel vm = albumListFactory.GetAlbumListViewModel(repository);
+            AlbumListViewModel vm = albumListFactory.GetAlbumListViewModel(repository, userName);
 
             return vm;
         }
@@ -49,9 +50,10 @@ namespace MyJournal.ApiControllers
         {
             IResourceRepository repository = new Repository.ResourceRepository();
 
+            string userName = this.User.Identity.Name;
             try
             {
-                Album album = repository.GetAlbum(id);
+                Album album = repository.GetAlbum(id, userName);
 
                 return album;
             }
@@ -68,8 +70,9 @@ namespace MyJournal.ApiControllers
             IResourceRepository repository = new Repository.ResourceRepository();
             try
             {
+                string userName = this.User.Identity.Name;
                 AlbumID = AlbumID.Replace("%27", "'");
-                Album album = repository.GetAlbum(AlbumID);
+                Album album = repository.GetAlbum(AlbumID, userName);
 
                 ResourceListViewModel resourceVM = new ResourceListViewModel
                 {
@@ -107,12 +110,17 @@ namespace MyJournal.ApiControllers
             {
                 if (albumID != null)
                 {
+                    String userName = this.User.Identity.Name;
                     System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
                     Repository.ResourceRepository repository = new Repository.ResourceRepository();
                     ReferenceRepository refRepository = new ReferenceRepository();
                     UserRepository ur = new UserRepository();
                     User user = ur.Get("piccoli.dan@gmail.com");
-                    Album album = repository.GetAlbum(albumID);
+                    Album album = repository.GetAlbum(albumID, userName);
+                    if (album == null)
+                    {
+                        throw new Exception("Cannot find " + albumID + ". No album of this name has been created by you or shared with you");
+                    }
                     album.AddResource(myResource);
                     repository.SaveAlbum(album);
 

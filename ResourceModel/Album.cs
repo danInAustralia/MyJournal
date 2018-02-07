@@ -11,11 +11,11 @@ namespace ResourceModel
     {
         public virtual int ID { get; set; }
         public virtual String Name { get; set; }
+        public virtual User Owner { get; set; }
         public virtual String Description { get; set; }
 
         public virtual DateTime AlbumDate { get; set; }
         public virtual IList<DigitalResource> Resources { get; set; }
-        public virtual User Owner { get; set; }
 
         /// <summary>
         /// Adds a resource if a resource with the MD5 hash has not been added previously
