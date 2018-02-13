@@ -12,9 +12,9 @@ namespace Repository.Mapping
     {
         public UserMap()
         {
-            Table("Users");
-            Id(x => x.ID).Column("UserID").GeneratedBy.Identity();
-            Map(x => x.UserName).Column("Username");
+            Table("AspNetUsers");
+            Id(x => x.ID).Column("Id");
+            Map(x => x.UserName).Column("UserName");
         }
     }
 }

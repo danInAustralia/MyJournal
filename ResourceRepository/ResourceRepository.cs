@@ -295,7 +295,6 @@ namespace Repository
                     {
                         Md5 = md5Sum,
                         OriginalFileName = originalName,
-                        Owner = owner,
                         Size = fileStream.Length
                     };
 

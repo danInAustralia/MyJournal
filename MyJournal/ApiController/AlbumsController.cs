@@ -38,6 +38,10 @@ namespace MyJournal.ApiControllers
         public async Task<Album> PostAlbum(Album album)
         {
             //add to the database
+            string userName = this.User.Identity.Name;
+            UserRepository ur = new UserRepository();
+            User user = ur.Get(userName);
+            album.Owner = user;
 
             IResourceRepository repository = new Repository.ResourceRepository();
             repository.AddAlbum(album);
@@ -114,8 +118,7 @@ namespace MyJournal.ApiControllers
                     System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
                     Repository.ResourceRepository repository = new Repository.ResourceRepository();
                     ReferenceRepository refRepository = new ReferenceRepository();
-                    UserRepository ur = new UserRepository();
-                    User user = ur.Get("piccoli.dan@gmail.com");
+
                     Album album = repository.GetAlbum(albumID, userName);
                     if (album == null)
                     {
@@ -155,7 +158,8 @@ namespace MyJournal.ApiControllers
                 Repository.ResourceRepository repository = new Repository.ResourceRepository();
                 ReferenceRepository refRepository = new ReferenceRepository();
                 UserRepository ur = new UserRepository();
-                User user = ur.Get("piccoli.dan@gmail.com");
+                string username = User.Identity.Name;
+                User user = ur.Get(username);
                 Album album = repository.GetAlbums(x => x.Name == albumID).FirstOrDefault();
 
                 //for (int i = 0; i < files.Count; i++)

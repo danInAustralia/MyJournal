@@ -8,7 +8,7 @@ namespace ResourceModel
 {
     public class User
     {
-        public virtual int ID { get; set; }
+        public virtual string ID { get; set; }
         public virtual String UserName { get; set; }
     }
 }

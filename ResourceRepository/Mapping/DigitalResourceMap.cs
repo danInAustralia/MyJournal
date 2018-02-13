@@ -18,7 +18,7 @@ namespace Repository.Mapping
             Map(x => x.Description).Column("Description");
             Map(x => x.Date).Column("Date");
             References(x => x.Type).Column("TypeID");
-            References(x => x.Owner).Column("OwnerID");
+            //References(x => x.Owner).Column("OwnerID");
             HasManyToMany<Tag>(x => x.Tags).Table("ResourceTag")
                 .ParentKeyColumn("ResourceID")
                 .ChildKeyColumn("TagID")
