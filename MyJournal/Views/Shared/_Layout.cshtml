@@ -39,20 +39,24 @@
         </div>
     </div>
     <div class="container body-content">
-        @RenderBody()
+        <div data-ng-view=""></div>
+        @*@RenderBody()*@
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Journal</p>
         </footer>
     </div>
 
 @*@Scripts.Render("~/bundles/bootstrap")*@
 @RenderSection("scripts", required: false)
 
+<script type="text/javascript" src="~/app/services/authService.js"></script>
+<script type="text/javascript" src="~/app/services/authInerceptorService.js"></script>
 <script type="text/javascript" src="~/app/services/albumprovider.js"></script>
 <script type="text/javascript" src="~/app/app.js"></script>
 <script type="text/javascript" src="~/app/Controllers/albumuploadcontroller.js"></script>
 <script type="text/javascript" src="~/app/Controllers/albumlistcontroller.js"></script>
+<script type="text/javascript" src="~/app/Controllers/loginController.js"></script>
 <script type="text/javascript" src="~/app/Controllers/albumviewcontroller.js"></script>
 </body>
 </html>

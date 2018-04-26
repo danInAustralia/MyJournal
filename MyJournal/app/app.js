@@ -1,4 +1,18 @@
-﻿var photoApp = angular.module("app", ["Journal.AlbumUploadController", "Journal.AlbumListController", "Journal.AlbumViewController", "Journal.AlbumProvider", "angularFileUpload", "ngMaterial", "ngAria", "ngRoute", "ui.bootstrap", "dx"]);
+﻿var photoApp = angular.module("app", ["Journal.loginController",
+    "LocalStorageModule",
+    "Journal.authService", 
+    "Journal.authInterceptorService",
+    "Journal.AlbumUploadController", 
+    "Journal.AlbumListController", 
+    "Journal.AlbumViewController", 
+    "Journal.AlbumProvider", 
+    "angularFileUpload", 
+    "ngMaterial", 
+    //"ngAria", 
+    "ngRoute", 
+    "ui.bootstrap", 
+    "dx",
+    "angular-loading-bar"]);
 
 photoApp.filter("pluralise", function () {
     return function (count, nouns) {
@@ -7,7 +21,30 @@ photoApp.filter("pluralise", function () {
     }
 });
 
+photoApp.config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.hashPrefix('');
+}]);
+
+photoApp.config(["$routeProvider", function ($routeProvider) {
+    $routeProvider.when('/home', {
+        templateUrl: '/app/views/Home/index.html'
+    });
+
+    $routeProvider.when('/login', {
+        templateUrl: '/app/views/Account/login.html',
+        controller: 'loginController'
+    });
+
+    $routeProvider.when('/albums', {
+        templateUrl: '/app/views/Albums/list.html',
+        controller: 'AlbumListController'
+    });
+
+    $routeProvider.otherwise({ redirectTo: "/home" });
+}]);
+
 photoApp.config(["$httpProvider", function ($httpProvider) {
+    $httpProvider.interceptors.push('authInterceptorService');
     $httpProvider.defaults.transformResponse.push(function (responseData) {
         convertDateStringsToDates(responseData);
         return responseData;

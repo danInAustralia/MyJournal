@@ -23,7 +23,9 @@ namespace MyJournal
                 .Include("~/Scripts/angular-material.js")
                 .Include("~/Scripts/moment.min.js")
                 .Include("~/Scripts/angular-file-upload.js")
+                .Include("~/Scripts/angular-local-storage.js")
                 .Include("~/Scripts/angular-ui.js")
+                .Include("~/Scripts/loading-bar.min.js")
                 );
 
             bundles.Add(new ScriptBundle("~/bundles/fileSaver")

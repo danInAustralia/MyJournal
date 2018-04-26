@@ -1,8 +1,4 @@
 ﻿
-@{
-    ViewBag.Title = "My Albums";
-}
-
 <h1>
     <div class="wrapper">
         Albums
@@ -19,7 +15,7 @@
                 <div style="margin: 5px" class="alert alert-danger" ng-show="page_load_error">
                     {{page_load_error}}
                 </div>
-                @*<p>{{ Albums | json}}</p>*@
+                <!--<p>{{ Albums | json}}</p>-->
 
                 <h2>Search</h2>
                 <p>
@@ -50,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="album in Albums.Albums | filter: { searchFor }" >
+                        <tr ng-repeat="album in Albums.Albums | filter: { searchFor }">
                             <td>
                                 <a href="albums/Detail?albumName={{album.Name}}">{{ album.Name }}</a>
                             </td>
@@ -68,35 +64,9 @@
                         <tr ng-if="model.BodiesOfWork.length == 0">
                             <td colspan="4" class="text-center">You have no albums meeting the criteria</td>
                         </tr>
-                        @*<tr ng-if="states.showBOWForm">
-                            <td>
-                                <input type="text" class="form-control" placeholder="Name" ng-model="model.NewBodyOfWork.Name" />
-                            </td>
-                            <td>
-                                <input type="date" class="form-control" placeholder="AssignedDate" ng-model="model.NewBodyOfWork.SubmittedDate" />
-                            </td>
-                            <td>
-                                <input type="date" class="form-control" placeholder="DueDate" ng-model="model.NewBodyOfWork.DueDate" />
-                            </td>
-                            <td>
-                                <select ng-model="model.NewBodyOfWork.Status" ng-options="bowStatus.Status for bowStatus in model.AllBodyOfWorkStatuses track by bowStatus.ID"></select>
-                            </td>
-                            <td>
-                                <select ng-model="model.NewBodyOfWork.PreferredCurrency" ng-options='bowCurrency.Name as (bowCurrency.Name + " ("+ bowCurrency.Symbol+")") for bowCurrency in model.AllCurrencies track by bowCurrency.ID'></select>
-                            </td>
-                            <td>
-                                <div class="checkbox">
-                                    <input type="checkbox" placeholder="Approved" ng-model="model.NewBodyOfWork.Approved" />Approved
-                                </div>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary" ng-click="addBOW(model.NewBodyOfWork)">Add</button>
-                                <button type="button" class="btn btn-default">Cancel</button>
-                            </td>
-                        </tr>*@
-                    </tbody> 
+                    </tbody>
                 </table>
-                @*<div class="album panel panel-primary" ng-repeat="album in Albums.Albums | filter: { searchFor } ">
+                <!--<div class="album panel panel-primary" ng-repeat="album in Albums.Albums | filter: { searchFor } ">
                     <div class="panel-heading">
                         <a href="albums/Detail?albumName={{album.Name}}">{{ album.Name }}</a>
                         <div class="title">{{ album.AlbumDate }}</div>
@@ -104,7 +74,7 @@
                     <div class="panel-body">
                         {{ album.Description }}
                     </div>
-                </div>*@
+                </div>-->
 
                 <!-- new album -->
                 <h2>Create</h2>
@@ -117,7 +87,7 @@
 
                             <input type="text" placeholder={{Albums.NewAlbum.Name}} size="17" ng-model="Albums.NewAlbum.Name" />
                             <div class="title">
-                                @*<md-datepicker ng-model="Albums.NewAlbum.AlbumDate" md-placeholder="Enter date"></md-datepicker>*@
+                                <!--<md-datepicker ng-model="Albums.NewAlbum.AlbumDate" md-placeholder="Enter date"></md-datepicker>-->
                                 <input type="date" style="width: 145px" placeholder="Enter date.." ng-model="Albums.NewAlbum.AlbumDate" />
                             </div>
                         </div>
@@ -125,15 +95,15 @@
                             <p>
                                 <textarea ng-model="Albums.NewAlbum.Description" placeholder="Description..." rows='4' style="width: 100%"></textarea>
                             </p>
-                            @*<p>
-                                    <input type="text"
-                                            name="name"
-                                            ng-model="Albums.NewAlbum.Name"
-                                            placeholder="Short name for URL..."
-                                            style="width: 100%"
-                                            ng-minlength="6"
-                                            ng-maxlength="40" />
-                                </p>*@
+                            <!--<p>
+                                <input type="text"
+                                       name="name"
+                                       ng-model="Albums.NewAlbum.Name"
+                                       placeholder="Short name for URL..."
+                                       style="width: 100%"
+                                       ng-minlength="6"
+                                       ng-maxlength="40" />
+                            </p>-->
                             <button ng-click="addAlbum(Albums.NewAlbum)" type="button" class="btn btn-success">Add New Album</button>
                         </div>
                     </form>

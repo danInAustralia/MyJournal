@@ -1,24 +1,26 @@
-﻿@using MyJournal.Models
-@model LoginViewModel
-@{
-    ViewBag.Title = "Log in";
-}
-
-<h2>@ViewBag.Title.</h2>
-
-<h1>
+﻿<h1>
     <div class="wrapper">
         Login
         <div class="arrow"></div>
     </div>
 </h1>
-<div class="contentbody">
+<div class="contentbody" ng-controller="loginController">
     <div class="wrapper lightsidecol">
         <div id="maincol">
             <div class="row">
                 <div class="col-md-8">
                     <section id="loginForm">
-                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        <form class="form-login" role="form">
+                            <h2 class="form-login-heading">Login</h2>
+                            <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus>
+                            <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
+                            <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
+                            <div data-ng-hide="message == ''" class="alert alert-danger">
+                                {{message}}
+                            </div>
+                        </form>
+                        @*
+                            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                             @Html.AntiForgeryToken()
                             <h4>Use a local account to log in.</h4>
@@ -54,23 +56,20 @@
                             <p>
                                 @Html.ActionLink("Register as a new user", "Register")
                             </p>
-                            @* Enable this once you have account confirmation enabled for password reset functionality
+                             Enable this once you have account confirmation enabled for password reset functionality
                                 <p>
                                     @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                                </p>*@
+                                </p>
                         }
+                            *@
                     </section>
                 </div>
                 <div class="col-md-4">
-                    <section id="socialLoginForm">
+                    @*<section id="socialLoginForm">
                         @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                    </section>
+                    </section>*@
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

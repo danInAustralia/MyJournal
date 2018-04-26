@@ -12,6 +12,8 @@ using System;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
 
 namespace MyJournal.ApiControllers
 {
@@ -27,7 +29,7 @@ namespace MyJournal.ApiControllers
         [Authorize]
         public AlbumListViewModel GetAllAlbums()
         {
-            string userName = this.User.Identity.Name;
+            string userName = User.Identity.Name;
             AlbumListViewModelFactory albumListFactory = new AlbumListViewModelFactory();
             IResourceRepository repository = new Repository.ResourceRepository();
             AlbumListViewModel vm = albumListFactory.GetAlbumListViewModel(repository, userName);
