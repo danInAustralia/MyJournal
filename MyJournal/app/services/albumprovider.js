@@ -57,10 +57,10 @@ angular.module('Journal.AlbumProvider', [])
                 });
         };
 
-        this.getAlbumByName = function (name, callback) {
+        this.getAlbum = function (id, callback) {
             $http(
                 {
-                    method: "GET", url: "/api/albums/", params: { id: name }
+                    method: "GET", url: "/api/albums/", params: { id: id }
                 })
                 .then(function (response) {
                     callback(null, response.data);
@@ -71,8 +71,8 @@ angular.module('Journal.AlbumProvider', [])
                 });
         };
 
-        this.getAlbumResources = function (name, pageNumber, callback) {
-            $http.get("/api/albums/AlbumResources", { params: { AlbumID: name, PageNumber: pageNumber } })
+        this.getAlbumResources = function (id, pageNumber, callback) {
+            $http.get("/api/albums/AlbumResources", { params: { AlbumID: id, PageNumber: pageNumber } })
                 .then(function (response) {
                     callback(null, response.data);
                 },

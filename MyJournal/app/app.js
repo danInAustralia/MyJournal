@@ -40,6 +40,11 @@ photoApp.config(["$routeProvider", function ($routeProvider) {
         controller: 'AlbumListController'
     });
 
+    $routeProvider.when('/album/:id', {
+        templateUrl: '/app/views/Albums/album.html',
+        controller: 'AlbumViewController'
+    });
+
     $routeProvider.otherwise({ redirectTo: "/home" });
 }]);
 

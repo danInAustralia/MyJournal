@@ -59,7 +59,7 @@ namespace Repository
         /// <param name="id"></param>
         /// <param name="ownerName"></param>
         /// <returns></returns>
-        public Album GetAlbum(string id, string ownerName)
+        public Album GetAlbum(int id, string ownerName)
         {
             var sessionFactory = SessionFactoryCreator.CreateSessionFactory();
 
@@ -71,7 +71,7 @@ namespace Repository
                         .Fetch(u => u.Resources)
                         .Eager
                         .List()
-                        .Where(u => u.Name == id && u.Owner.UserName == ownerName)
+                        .Where(u => u.ID == id && u.Owner.UserName == ownerName)
                         .FirstOrDefault();
 
                     return album;

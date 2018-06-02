@@ -272,6 +272,7 @@
     <Content Include="app\services\albumprovider.js" />
     <Content Include="app\services\authInerceptorService.js" />
     <Content Include="app\services\authService.js" />
+    <Content Include="app\views\Albums\album.html" />
     <Content Include="app\views\Albums\list.html" />
     <Content Include="app\views\Home\index.html" />
     <Content Include="Content\angular-material.css" />

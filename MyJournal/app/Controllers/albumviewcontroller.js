@@ -1,9 +1,27 @@
 ﻿angular.module('Journal.AlbumViewController', [])
-    .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http', 
-        function ($scope, $routeParams, albumProvider, $location, $http) {
+    .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http', '$routeParams',
+        function ($scope, $routeParams, albumProvider, $location, $http, $routeParams) {
             $scope.Total = 0;
             $scope.itemsPerPage = 20;
             $scope.CurrentPage = 1;
+
+            albumProvider.getAlbum($routeParams.id, function (err, album) {
+                if (err) {
+                    if (err.error == "not_found")
+                        $scope.page_load_error = "No such album. Are you calling this right?";
+                    else
+                        $scope.page_load_error = "Unexpected error loading albums: " + err.message;
+                } else {
+                    $scope.album = album;
+                    //update view resources
+                    albumProvider.getAlbumResources($routeParams.id, $scope.CurrentPage, function (err, resources) {
+                        $scope.resources = resources.Resources;
+                        $scope.Total = resources.Total;
+                        $scope.itemsPerPage = 20;
+                        $scope.CurrentPage = 1;
+                    });
+                }
+            });
 
             //test for autocomplete
             $scope.searchText = "";
@@ -33,28 +51,7 @@
 
         $scope.init = function (albumName) {
             $scope.visiblePopup = false;
-            if (albumName)
-            {
-                albumName = albumName.replace("%27", "'");
-            }
-            $scope.AlbumName = albumName;
-            albumProvider.getAlbumByName(albumName, function (err, album) {
-                if (err) {
-                    if (err.error == "not_found")
-                        $scope.page_load_error = "No such album. Are you calling this right?";
-                    else
-                        $scope.page_load_error = "Unexpected error loading albums: " + err.message;
-                } else {
-                    $scope.album = album;
-                    //update view resources
-                    albumProvider.getAlbumResources(albumName, $scope.CurrentPage, function (err, resources) {
-                        $scope.resources = resources.Resources;
-                        $scope.Total = resources.Total;
-                        $scope.itemsPerPage = 20;
-                        $scope.CurrentPage = 1;
-                    });
-                }
-            });
+
         }
 
         $scope.pageChanged = function () {

@@ -52,7 +52,7 @@ namespace MyJournal.ApiControllers
         }
 
         [Authorize]
-        public Album GetAlbum(string id)
+        public Album GetAlbum(int id)
         {
             IResourceRepository repository = new Repository.ResourceRepository();
 
@@ -71,13 +71,13 @@ namespace MyJournal.ApiControllers
 
         [Authorize]
         [HttpGet]
-        public ResourceListViewModel AlbumResources(string AlbumID, int PageNumber)
+        public ResourceListViewModel AlbumResources(int AlbumID, int PageNumber)
         {
             IResourceRepository repository = new Repository.ResourceRepository();
             try
             {
                 string userName = this.User.Identity.Name;
-                AlbumID = AlbumID.Replace("%27", "'");
+
                 Album album = repository.GetAlbum(AlbumID, userName);
 
                 ResourceListViewModel resourceVM = new ResourceListViewModel
@@ -105,7 +105,7 @@ namespace MyJournal.ApiControllers
         /// </summary>
         /// <param name="albumID"></param>
         [HttpPost]
-        public bool AddResource(string albumID, string resourceID)
+        public bool AddResource(int albumID, string resourceID)
         {
             bool success = false;
             //throw new Exception("forced error");
@@ -114,8 +114,6 @@ namespace MyJournal.ApiControllers
             //DigitalResource resource = null;
             if (myResource != null)
             {
-                if (albumID != null)
-                {
                     String userName = this.User.Identity.Name;
                     System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
                     Repository.ResourceRepository repository = new Repository.ResourceRepository();
@@ -128,8 +126,7 @@ namespace MyJournal.ApiControllers
                     }
                     album.AddResource(myResource);
                     repository.SaveAlbum(album);
-
-                }
+                
             }
             else
             {
