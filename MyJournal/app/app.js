@@ -45,6 +45,11 @@ photoApp.config(["$routeProvider", function ($routeProvider) {
         controller: 'AlbumViewController'
     });
 
+    $routeProvider.when('/ResourceUploader/:id', {
+        templateUrl: '/app/views/Albums/upload.html',
+        controller: 'AlbumUploadController'
+    });
+
     $routeProvider.otherwise({ redirectTo: "/home" });
 }]);
 

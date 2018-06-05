@@ -1,5 +1,5 @@
 ﻿
-<div ng-controller="AlbumViewController" ng-init="init('@Model.Replace(" '","%27")' )">
+<div ng-controller="AlbumViewController">
     <h1>
         <div class="wrapper">
             {{album.Name}}
@@ -31,7 +31,7 @@
 
         <div style="clear: left"></div>
 
-        <a href="ResourceUploader?albumName={{album.Name}}">
+        <a href="/#/ResourceUploader/{{album.ID}}">
             <button type="button" class="btn btn-success">Add files to this album</button>
         </a>
 

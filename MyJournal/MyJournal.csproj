@@ -274,6 +274,7 @@
     <Content Include="app\services\authService.js" />
     <Content Include="app\views\Albums\album.html" />
     <Content Include="app\views\Albums\list.html" />
+    <Content Include="app\views\Albums\upload.html" />
     <Content Include="app\views\Home\index.html" />
     <Content Include="Content\angular-material.css" />
     <Content Include="Content\angular-material.layout-attributes.css" />

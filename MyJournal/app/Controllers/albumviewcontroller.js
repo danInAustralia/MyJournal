@@ -1,6 +1,6 @@
 ﻿angular.module('Journal.AlbumViewController', [])
-    .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http', '$routeParams',
-        function ($scope, $routeParams, albumProvider, $location, $http, $routeParams) {
+    .controller('AlbumViewController', ['$scope', '$routeParams', 'albumProvider', '$location', '$http', 
+        function ($scope, $routeParams, albumProvider, $location, $http) {
             $scope.Total = 0;
             $scope.itemsPerPage = 20;
             $scope.CurrentPage = 1;
