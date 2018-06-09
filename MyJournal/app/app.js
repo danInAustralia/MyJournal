@@ -2,6 +2,7 @@
     "LocalStorageModule",
     "Journal.authService", 
     "Journal.authInterceptorService",
+    "Journal.indexController",
     "Journal.AlbumUploadController", 
     "Journal.AlbumListController", 
     "Journal.AlbumViewController", 

@@ -263,6 +263,7 @@
     <Compile Include="ViewModels\ResourceListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\Controllers\indexController.js" />
     <Content Include="app\views\Account\login.html" />
     <Content Include="app\app.js" />
     <Content Include="app\Controllers\albumlistcontroller.js" />

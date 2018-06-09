@@ -8,17 +8,17 @@
 
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <link href="Content/angular-ui.min.css" rel="stylesheet" />
-    <link href="Content/Site.css" rel="stylesheet" />
     <link href="Content/dx.common.css" rel="stylesheet" />
     <link href="Content/dx.spa.css" rel="stylesheet" />
     <link href="Content/dx.light.css" rel="stylesheet" />
     <link href="Content/angular-material.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
     <link rel="dx-theme" data-theme="generic.light" href="Content/dx.light.css" data-active="true" />
 
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" ng-controller="indexController">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -30,22 +30,34 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#/albums">bum</a></li>
+                    <li><a href="#/albums">Albums</a></li>
                     
                     <!--<li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>-->
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li data-ng-hide="!authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>
+                    <li data-ng-hide="!authentication.isAuth"><a href="#/orders">My Orders</a></li>
+                    <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
+                    <li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>
+                    <li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>
+                </ul>
                 <!--@Html.Partial("_LoginPartial")-->
             </div>
+            <div id="logo">
+                <a href="http://iiid.murdoch.edu.au/">Journal</a>
+            </div>
+            <div class="enquire_btn"><a href="/Home/Contact">Contact us</a></div>
         </div>
+
+
     </div>
-    <div class="container body-content">
-        <div data-ng-view=""></div>
-        <hr />
-        <footer>
-            <p>2018 - Journal</p>
-        </footer>
-    </div>
+
+    <div data-ng-view=""></div>
+    <hr />
+    <footer>
+        <p>2018 - Journal</p>
+    </footer>
 
 
     <!-- 3rd party libraries -->
@@ -76,6 +88,7 @@
     <script type="text/javascript" src="app/services/authInerceptorService.js"></script>
     <script type="text/javascript" src="app/services/albumprovider.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/Controllers/indexController.js"></script>
     <script type="text/javascript" src="app/Controllers/albumuploadcontroller.js"></script>
     <script type="text/javascript" src="app/Controllers/albumlistcontroller.js"></script>
     <script type="text/javascript" src="app/Controllers/loginController.js"></script>
